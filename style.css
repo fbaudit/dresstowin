@@ -27,6 +27,7 @@ body {
     color: var(--text-color);
     margin: 0;
     transition: background-color 0.3s, color 0.3s;
+    padding: 20px 0; /* Add padding for mobile scrolling */
 }
 
 .container {
@@ -39,6 +40,7 @@ body {
     transition: background-color 0.3s;
     max-width: 400px;
     width: 90%;
+    margin: auto; /* Ensure centering with body padding */
 }
 
 h1 {
@@ -187,7 +189,7 @@ h1 {
     resize: vertical;
 }
 
-#submit-button {
+#submit-button, .action-btn {
     width: 100%;
     background-color: #333;
     color: white;
@@ -197,6 +199,14 @@ h1 {
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.3s;
+}
+
+.action-btn {
+    background-color: #4CAF50; /* Green for start action */
+}
+
+.action-btn:hover {
+    background-color: #388E3C;
 }
 
 body.dark-mode #submit-button {
@@ -209,4 +219,56 @@ body.dark-mode #submit-button {
 
 body.dark-mode #submit-button:hover {
     background-color: #777;
+}
+
+/* Animal Test Section */
+.animal-test-section {
+    margin-top: 2.5rem;
+    text-align: center;
+}
+
+.animal-test-section hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin-bottom: 1.5rem;
+}
+
+#webcam-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+#label-container {
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.label-wrapper {
+    margin-bottom: 8px;
+}
+
+.label-name {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.label-bar-bg {
+    width: 100%;
+    background-color: #eee;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+body.dark-mode .label-bar-bg {
+    background-color: #444;
+}
+
+.label-bar-fill {
+    height: 100%;
+    background-color: #ccc;
+    width: 0%;
+    transition: width 0.1s linear, background-color 0.3s;
 }
