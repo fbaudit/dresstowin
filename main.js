@@ -1,51 +1,8 @@
-class LottoNumber extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-
-    render() {
-        const shadow = this.shadowRoot;
-        shadow.innerHTML = ''; // Clear previous content if any
-
-        const number = document.createElement('div');
-        number.setAttribute('class', 'lotto-number');
-        number.textContent = this.getAttribute('number');
-
-        const style = document.createElement('style');
-        style.textContent = `
-            :host {
-                display: inline-block;
-            }
-            .lotto-number {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background-color: #4CAF50;
-                color: white;
-                font-size: 1.5rem;
-                font-weight: bold;
-            }
-        `;
-        shadow.appendChild(style);
-        shadow.appendChild(number);
-    }
-}
-
-customElements.define('lotto-number', LottoNumber);
-
 // Theme Toggle Logic
 const themeToggleBtn = document.getElementById('theme-toggle');
 const body = document.body;
 
-// Check for saved user preference, if any, on load of the website
+// Check for saved user preference
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
     body.classList.add(currentTheme);
@@ -67,17 +24,37 @@ themeToggleBtn.addEventListener('click', function () {
     localStorage.setItem('theme', theme);
 });
 
-document.getElementById('generate-button').addEventListener('click', () => {
-    const lottoNumbersContainer = document.getElementById('lotto-numbers-container');
-    lottoNumbersContainer.innerHTML = '';
-    const numbers = new Set();
-    while (numbers.size < 6) {
-        numbers.add(Math.floor(Math.random() * 45) + 1);
-    }
+// Food Recommendation Logic
+const foodOptions = [
+    "Korean BBQ (Samgyeopsal/Galbi)",
+    "Chinese Cuisine (Jajangmyeon/Tangsuyuk)",
+    "Japanese Sushi/Sashimi",
+    "Western Steak & Pasta",
+    "Pizza & Salad Bar",
+    "Fried Chicken & Beer (Chimaek)",
+    "Family Restaurant (Outback/VIPS)",
+    "Vietnamese Pho",
+    "Thai Cuisine",
+    "Shabu-Shabu",
+    "Korean Stew (Kimchi/Budae Jjigae)",
+    "Burger & Fries"
+];
 
-    for (const number of Array.from(numbers).sort((a, b) => a - b)) {
-        const lottoNumberElement = document.createElement('lotto-number');
-        lottoNumberElement.setAttribute('number', number);
-        lottoNumbersContainer.appendChild(lottoNumberElement);
-    }
+const generateButton = document.getElementById('generate-button');
+const resultContainer = document.getElementById('result-container');
+
+generateButton.addEventListener('click', () => {
+    // Add a simple animation effect
+    resultContainer.innerHTML = '<div class="loader">Thinking...</div>';
+    
+    setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * foodOptions.length);
+        const selectedFood = foodOptions[randomIndex];
+        
+        resultContainer.innerHTML = `
+            <div class="food-card">
+                <h2>${selectedFood}</h2>
+            </div>
+        `;
+    }, 500); // 0.5s delay for effect
 });

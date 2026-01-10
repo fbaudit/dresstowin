@@ -2,22 +2,23 @@
     --bg-color: #f0f0f0;
     --container-bg: #ffffff;
     --text-color: #333333;
-    --button-bg: #008CBA;
-    --button-hover: #005f7a;
+    --button-bg: #FF9800; /* Orange for food appetite */
+    --button-hover: #F57C00;
     --button-text: #ffffff;
+    --accent-color: #4CAF50;
 }
 
 body.dark-mode {
     --bg-color: #121212;
     --container-bg: #1e1e1e;
     --text-color: #e0e0e0;
-    --button-bg: #bb86fc;
-    --button-hover: #9965f4;
+    --button-bg: #FFB74D;
+    --button-hover: #FF9800;
     --button-text: #000000;
 }
 
 body {
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,60 +33,95 @@ body {
     position: relative;
     text-align: center;
     background-color: var(--container-bg);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
+    max-width: 400px;
+    width: 90%;
 }
 
 h1 {
     color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
 }
 
-#lotto-numbers-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 2rem 0;
-}
-
-/* We will leave the lotto number styles in the Web Component, 
-   but we can remove the duplicate class definition here if it's unused,
-   or update it if it's used as a fallback. 
-   The Web Component uses Shadow DOM so this style block might not affect it 
-   unless applied to the light DOM elements or inherited variables. */
-.lotto-number {
+.result-area {
+    min-height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #4CAF50;
-    color: white;
+    margin: 2rem 0;
+}
+
+.placeholder-text {
+    color: #888;
+    font-style: italic;
+}
+
+.food-card {
+    background-color: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 100%;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.food-card h2 {
+    margin: 0;
+    color: var(--button-hover);
     font-size: 1.5rem;
-    font-weight: bold;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.loader {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 #generate-button {
     background-color: var(--button-bg);
     color: var(--button-text);
     border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 25px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 #generate-button:hover {
     background-color: var(--button-hover);
+    transform: translateY(-2px);
+}
+
+#generate-button:active {
+    transform: translateY(0);
 }
 
 #theme-toggle {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     background: transparent;
     border: 1px solid var(--text-color);
     color: var(--text-color);
@@ -94,9 +130,11 @@ h1 {
     cursor: pointer;
     font-size: 0.8rem;
     transition: all 0.3s ease;
+    opacity: 0.7;
 }
 
 #theme-toggle:hover {
     background-color: var(--text-color);
     color: var(--container-bg);
+    opacity: 1;
 }
