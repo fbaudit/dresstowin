@@ -14,6 +14,23 @@
             <p class="placeholder-text">Click the button to decide what to eat!</p>
         </div>
         <button id="generate-button">Recommend Menu</button>
+
+        <div class="partnership-section">
+            <hr>
+            <h3>Partnership Inquiry</h3>
+            <form action="https://formspree.io/f/xyzkpvow" method="POST" id="partnership-form">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Name / Company" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="message" placeholder="How can we partner together?" required></textarea>
+                </div>
+                <button type="submit" id="submit-button">Send Inquiry</button>
+            </form>
+        </div>
     </div>
     <script src="main.js"></script>
 </body>

@@ -148,3 +148,65 @@ h1 {
     color: var(--container-bg);
     opacity: 1;
 }
+
+.partnership-section {
+    margin-top: 2.5rem;
+    text-align: left;
+}
+
+.partnership-section hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin-bottom: 1.5rem;
+}
+
+.partnership-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 0.8rem;
+}
+
+.partnership-section input, 
+.partnership-section textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    font-size: 0.9rem;
+}
+
+.partnership-section textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+#submit-button {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+body.dark-mode #submit-button {
+    background-color: #555;
+}
+
+#submit-button:hover {
+    background-color: #000;
+}
+
+body.dark-mode #submit-button:hover {
+    background-color: #777;
+}
