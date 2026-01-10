@@ -151,12 +151,76 @@ h1 {
     opacity: 1;
 }
 
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.nav-links a {
+    margin-left: 15px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.subtitle {
+    color: #666;
+    margin-top: -1rem;
+    margin-bottom: 2rem;
+}
+
+body.dark-mode .subtitle {
+    color: #aaa;
+}
+
+/* Content Sections */
+.content-section {
+    margin-bottom: 3rem;
+}
+
+.text-content {
+    text-align: left;
+    line-height: 1.6;
+}
+
+.text-content h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--button-bg);
+}
+
 .partnership-section {
-    margin-top: 2.5rem;
+    margin-top: 1rem;
     text-align: left;
 }
 
-.partnership-section hr {
+/* Footer */
+footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+footer a {
+    color: var(--button-bg);
+    text-decoration: none;
+}
+
+.partnership-section hr, .animal-test-section hr {
     border: 0;
     border-top: 1px solid #eee;
     margin-bottom: 1.5rem;

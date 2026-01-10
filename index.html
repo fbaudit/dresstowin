@@ -12,16 +12,49 @@
 </head>
 <body>
     <div class="container">
-        <button id="theme-toggle">🌙 Dark Mode</button>
-        <h1>Saturday Family Dining 🍽️</h1>
-        <div id="result-container" class="result-area">
-            <p class="placeholder-text">Click the button to decide what to eat!</p>
-        </div>
-        <button id="generate-button">Recommend Menu</button>
+        <nav class="navbar">
+            <a href="index.html" class="nav-logo">Family Dining</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#ai-test">AI Test</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
 
-        <div class="partnership-section">
+        <button id="theme-toggle" style="position: relative; top: auto; right: auto; margin-bottom: 1rem;">🌙 Dark Mode</button>
+        
+        <header>
+            <h1>Saturday Family Dining 🍽️</h1>
+            <p class="subtitle">Solve your weekend menu dilemma instantly!</p>
+        </header>
+
+        <section class="content-section">
+            <div id="result-container" class="result-area">
+                <p class="placeholder-text">Click the button below to get a delicious recommendation!</p>
+            </div>
+            <button id="generate-button">Recommend Menu</button>
+        </section>
+
+        <section id="about" class="content-section text-content">
+            <h2>Why Use Family Dining Recommender?</h2>
+            <p>Choosing a meal that satisfies everyone in a family of four can be a challenging task, especially on weekends. Our <strong>Family Dining Recommender</strong> is designed to alleviate this stress by providing random, popular, and family-friendly dining options.</p>
+            <p>Whether you are craving savory <em>Korean BBQ</em>, fresh <em>Sushi</em>, or a hearty <em>Stew</em>, our algorithm picks from a curated list of top-rated food categories loved by families. Stop arguing over "What's for dinner?" and let fate decide your next culinary adventure.</p>
+        </section>
+
+        <section id="ai-test" class="animal-test-section content-section">
+            <hr>
+            <h3>🐶 Dog vs Cat AI Test 🐱</h3>
+            <p>Curious if your pet looks more like a standard dog or a cat to an AI? Or maybe you want to test your own face? This feature uses Google's Teachable Machine technology to identify visual patterns in real-time. Images are processed locally in your browser and are never sent to a server, ensuring your privacy.</p>
+            <p style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold;">Show a dog or cat to the camera!</p>
+            <button type="button" id="start-animal-test-btn" class="action-btn">Start Camera</button>
+            <div id="webcam-container"></div>
+            <div id="label-container"></div>
+        </section>
+
+        <section id="contact" class="partnership-section content-section">
             <hr>
             <h3>Partnership Inquiry</h3>
+            <p>Are you a restaurant owner looking to be featured? Contact us!</p>
             <form action="https://formspree.io/f/maqqwpje" method="POST" id="partnership-form">
                 <div class="form-group">
                     <input type="text" name="name" placeholder="Name / Company" required>
@@ -34,18 +67,14 @@
                 </div>
                 <button type="submit" id="submit-button">Send Inquiry</button>
             </form>
-        </div>
-
-        <div class="animal-test-section">
-            <hr>
-            <h3>🐶 Dog vs Cat AI Test 🐱</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 1rem;">Show a dog or cat to the camera!</p>
-            <button type="button" id="start-animal-test-btn" class="action-btn">Start Camera</button>
-            <div id="webcam-container"></div>
-            <div id="label-container"></div>
-        </div>
+        </section>
 
         <div id="disqus_thread" style="margin-top: 2.5rem;"></div>
+        
+        <footer>
+            <p>&copy; 2026 Family Dining Recommender. All rights reserved.</p>
+            <a href="privacy.html">Privacy Policy</a>
+        </footer>
         <script>
             /**
             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
