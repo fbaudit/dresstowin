@@ -28,6 +28,32 @@ class LottoNumber extends HTMLElement {
 
 customElements.define('lotto-number', LottoNumber);
 
+// Theme Toggle Logic
+const themeToggleBtn = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check for saved user preference, if any, on load of the website
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme) {
+    body.classList.add(currentTheme);
+    if (currentTheme === 'dark-mode') {
+        themeToggleBtn.textContent = '☀️ Light Mode';
+    }
+}
+
+themeToggleBtn.addEventListener('click', function () {
+    body.classList.toggle('dark-mode');
+
+    let theme = 'light';
+    if (body.classList.contains('dark-mode')) {
+        theme = 'dark-mode';
+        themeToggleBtn.textContent = '☀️ Light Mode';
+    } else {
+        themeToggleBtn.textContent = '🌙 Dark Mode';
+    }
+    localStorage.setItem('theme', theme);
+});
+
 document.getElementById('generate-button').addEventListener('click', () => {
     const lottoNumbersContainer = document.getElementById('lotto-numbers-container');
     lottoNumbersContainer.innerHTML = '';
