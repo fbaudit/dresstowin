@@ -1,13 +1,26 @@
 class LottoNumber extends HTMLElement {
     constructor() {
         super();
-        const shadow = this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: 'open' });
+    }
+
+    connectedCallback() {
+        this.render();
+    }
+
+    render() {
+        const shadow = this.shadowRoot;
+        shadow.innerHTML = ''; // Clear previous content if any
+
         const number = document.createElement('div');
         number.setAttribute('class', 'lotto-number');
         number.textContent = this.getAttribute('number');
 
         const style = document.createElement('style');
         style.textContent = `
+            :host {
+                display: inline-block;
+            }
             .lotto-number {
                 display: flex;
                 justify-content: center;
