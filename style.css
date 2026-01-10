@@ -48,7 +48,7 @@ h1 {
 }
 
 .result-area {
-    min-height: 100px;
+    min-height: 200px; /* Increased height for image */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,16 +62,26 @@ h1 {
 
 .food-card {
     background-color: var(--bg-color);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 10px;
     width: 100%;
     animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+.food-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background-color: #ccc; /* Placeholder color while loading */
 }
 
 .food-card h2 {
     margin: 0;
     color: var(--button-hover);
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* Slightly smaller to fit */
 }
 
 @keyframes popIn {
