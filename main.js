@@ -120,9 +120,12 @@ generateButton.addEventListener('click', () => {
                 <h2>${selectedFood.name}</h2>
                 <p class="food-description">${selectedFood.description}</p>
                 <div class="nutrition-info">
-                    <span>🔥 ${selectedFood.calories} kcal</span>
-                    <span>🧂 ${selectedFood.sodium} mg</span>
+                    <span>🔥 ${selectedFood.calories} kcal (Est.)</span>
+                    <span>🧂 ${selectedFood.sodium} mg (Est.)</span>
                 </div>
+                <a href="https://www.google.com/search?q=${encodeURIComponent(selectedFood.name + ' nutrition facts calories sodium')}" target="_blank" class="search-link">
+                    🔍 Search Nutrition Info on Google
+                </a>
             </div>
         `;
     }, 500); // 0.5s delay for effect
