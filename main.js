@@ -116,7 +116,7 @@ generateButton.addEventListener('click', () => {
         
         resultContainer.innerHTML = `
             <div class="food-card">
-                <img src="${imageUrl}" alt="${selectedFood.name}" class="food-image">
+                <img src="${imageUrl}" alt="${selectedFood.name}" class="food-image" loading="lazy">
                 <h2>${selectedFood.name}</h2>
                 <p class="food-description">${selectedFood.description}</p>
             </div>
