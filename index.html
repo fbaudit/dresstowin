@@ -71,6 +71,7 @@
             <a href="index.html" class="nav-logo">Family Dining</a>
             <div class="nav-links">
                 <a href="#about">About</a>
+                <a href="#at-home">At Home</a>
                 <a href="#ai-test">AI Test</a>
                 <a href="#contact">Contact</a>
             </div>
@@ -101,6 +102,17 @@
             <h2>Why Use Family Dining Recommender?</h2>
             <p>Choosing a meal that satisfies everyone in a family of four can be a challenging task, especially on weekends. Our <strong>Family Dining Recommender</strong> is designed to alleviate this stress by providing random, popular, and family-friendly dining options.</p>
             <p>Whether you are craving savory <em>Korean BBQ</em>, fresh <em>Sushi</em>, or a hearty <em>Stew</em>, our algorithm picks from a curated list of top-rated food categories loved by families. Stop arguing over "What's for dinner?" and let fate decide your next culinary adventure.</p>
+        </section>
+
+        <section id="at-home" class="content-section">
+            <hr>
+            <h3>🏠 At Home: Fridge Chef</h3>
+            <p>Tell us what's in your fridge, and we'll suggest what to cook!</p>
+            <div class="fridge-container">
+                <textarea id="fridge-input" placeholder="Enter ingredients separated by commas (e.g., eggs, kimchi, onion, pork)..."></textarea>
+                <button id="fridge-btn" class="action-btn">Find Recipes</button>
+            </div>
+            <div id="fridge-result" class="result-area" style="display: none; flex-direction: column; gap: 20px;"></div>
         </section>
 
         <section id="ai-test" class="ai-test-section content-section">

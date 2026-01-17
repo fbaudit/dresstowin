@@ -83,6 +83,77 @@ const foodData = {
     ]
 };
 
+// At Home: Fridge Chef Logic
+const recipesDB = [
+    { name: "Egg Fried Rice", ingredients: ["rice", "egg", "green onion"], description: "Simple and savory golden fried rice.", image: "https://loremflickr.com/100/100/fried,rice" },
+    { name: "Kimchi Fried Rice", ingredients: ["kimchi", "rice", "ham", "pork"], description: "Spicy and addictive fried rice with kimchi.", image: "https://loremflickr.com/100/100/kimchi,rice" },
+    { name: "Soy Sauce Egg Rice", ingredients: ["rice", "egg", "soy sauce", "butter"], description: "Comfort food ready in 5 minutes.", image: "https://loremflickr.com/100/100/egg,rice" },
+    { name: "Aglio e Olio", ingredients: ["pasta", "garlic", "olive oil"], description: "Classic Italian pasta with garlic and oil.", image: "https://loremflickr.com/100/100/pasta,garlic" },
+    { name: "Tuna Mayo Rice", ingredients: ["rice", "tuna", "mayonnaise"], description: "Creamy and savory rice bowl.", image: "https://loremflickr.com/100/100/tuna,rice" },
+    { name: "Grilled Cheese Sandwich", ingredients: ["bread", "cheese", "butter"], description: "Crispy, gooey, and delicious.", image: "https://loremflickr.com/100/100/grilled,cheese" },
+    { name: "French Toast", ingredients: ["bread", "egg", "milk", "sugar"], description: "Sweet breakfast delight.", image: "https://loremflickr.com/100/100/french,toast" },
+    { name: "Potato Stir Fry", ingredients: ["potato", "onion", "carrot"], description: "Simple side dish with julienned potatoes.", image: "https://loremflickr.com/100/100/potato,dish" },
+    { name: "Ramen with Egg", ingredients: ["ramen", "egg", "green onion"], description: "Upgrade your instant noodles.", image: "https://loremflickr.com/100/100/ramen" },
+    { name: "Kimchi Stew", ingredients: ["kimchi", "pork", "tofu", "onion"], description: "Deep flavor stew perfect for rainy days.", image: "https://loremflickr.com/100/100/kimchi,stew" },
+    { name: "Tomato Pasta", ingredients: ["pasta", "tomato", "onion", "garlic"], description: "Basic but tasty tomato sauce pasta.", image: "https://loremflickr.com/100/100/tomato,pasta" },
+    { name: "Omelet", ingredients: ["egg", "cheese", "onion", "carrot"], description: "Fluffy eggs with melted cheese.", image: "https://loremflickr.com/100/100/omelet" }
+];
+
+document.getElementById('fridge-btn').addEventListener('click', () => {
+    const input = document.getElementById('fridge-input').value.toLowerCase();
+    const resultDiv = document.getElementById('fridge-result');
+    
+    if (!input.trim()) {
+        alert("Please enter at least one ingredient!");
+        return;
+    }
+
+    const userIngredients = input.split(',').map(i => i.trim());
+    
+    // Scoring logic
+    const suggestions = recipesDB.map(recipe => {
+        let matchCount = 0;
+        let missing = [];
+        
+        // Check how many recipe ingredients match user input
+        recipe.ingredients.forEach(ing => {
+            if (userIngredients.some(ui => ui.includes(ing) || ing.includes(ui))) {
+                matchCount++;
+            } else {
+                missing.push(ing);
+            }
+        });
+
+        return { ...recipe, matchCount, missing };
+    })
+    .filter(item => item.matchCount > 0) // Only keep items with at least one match
+    .sort((a, b) => b.matchCount - a.matchCount) // Sort by highest match
+    .slice(0, 3); // Take top 3
+
+    // Display Results
+    resultDiv.style.display = 'flex';
+    resultDiv.innerHTML = '';
+
+    if (suggestions.length === 0) {
+        resultDiv.innerHTML = '<p>No matching recipes found. Try adding basic ingredients like "egg", "rice", or "bread".</p>';
+        return;
+    }
+
+    suggestions.forEach(item => {
+        const missingText = item.missing.length > 0 ? `(Missing: ${item.missing.join(', ')})` : '(You have all ingredients!)';
+        resultDiv.innerHTML += `
+            <div class="recipe-suggestion-card">
+                <img src="${item.image}?random=${Math.random()}" class="recipe-thumb" alt="${item.name}">
+                <div class="recipe-info">
+                    <h4>${item.name}</h4>
+                    <p>${item.description}</p>
+                    <p style="font-size: 0.8rem; color: var(--button-bg); margin-top:5px;">${missingText}</p>
+                </div>
+            </div>
+        `;
+    });
+});
+
 let currentMeal = 'dinner';
 const generateButton = document.getElementById('generate-button');
 const resultContainer = document.getElementById('result-container');
