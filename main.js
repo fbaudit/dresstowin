@@ -633,10 +633,33 @@ function playLadderGame(players, totalAmount) {
         const payerName = players[currentIdx];
         const payAmount = results[maxPayerIndex];
         
+        // --- Added: Full Summary Calculation ---
+        let summary = [];
+        for (let i = 0; i < numPlayers; i++) {
+            // Find which player ends up at bottom slot 'i'
+            let playerIdx = i;
+            // Trace UP from bottom slot 'i' to find starting player
+            allBridges.forEach(bridge => {
+                if (bridge.col === playerIdx) playerIdx++;
+                else if (bridge.col === playerIdx - 1) playerIdx--;
+            });
+            summary.push({ name: players[playerIdx], result: results[i] });
+        }
+
         if (totalAmount > 0) {
-             ladderResult.textContent = `😭 ${payerName} pays the most: ${payAmount}!`;
+             ladderResult.innerHTML = `
+                <p style="margin-bottom:10px;">😭 ${payerName} pays the most: ${payAmount}!</p>
+                <div style="font-size: 0.9rem; border-top: 1px solid #ddd; padding-top: 10px; text-align: left; display: inline-block;">
+                    ${summary.map(s => `<div style="margin-bottom:5px;">• ${s.name}: <span style="color:${s.result.includes('PAY') || parseInt(s.result.replace(/,/g,'')) > 0 ? 'red' : 'green'}">${s.result}</span></div>`).join('')}
+                </div>
+             `;
         } else {
-             ladderResult.textContent = `😭 ${payerName} pays for everything! 💸`;
+             ladderResult.innerHTML = `
+                <p style="margin-bottom:10px;">😭 ${payerName} pays for everything! 💸</p>
+                <div style="font-size: 0.9rem; border-top: 1px solid #ddd; padding-top: 10px; text-align: left; display: inline-block;">
+                    ${summary.map(s => `<div>• ${s.name}: ${s.result}</div>`).join('')}
+                </div>
+             `;
         }
         
         // Highlight the loser's name at top
