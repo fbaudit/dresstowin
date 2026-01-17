@@ -72,7 +72,8 @@
             <div class="nav-links">
                 <a href="#about">About</a>
                 <a href="#at-home">At Home</a>
-                <a href="#ai-test">Ai Decision</a>
+                <a href="#ai-decision">Ai Decision</a>
+                <a href="#making">Making</a>
                 <a href="#contact">Contact</a>
             </div>
         </nav>
@@ -133,7 +134,7 @@
             </div>
         </div>
 
-        <section id="ai-test" class="ai-test-section content-section">
+        <section id="ai-decision" class="ai-test-section content-section">
             <hr>
             <h3>👨 Man Like vs Woman Like Ai Decision 👩</h3>
             <p>Wondering if your meal choice is traditionally more popular among men or women? Show your food to the camera! This feature uses Google's Teachable Machine technology to analyze food patterns and predict gender preferences. Images are processed locally in your browser and are never sent to a server, ensuring your privacy.</p>
@@ -141,6 +142,24 @@
             <button type="button" id="start-ai-test-btn" class="action-btn">Start Camera</button>
             <div id="webcam-container"></div>
             <div id="label-container"></div>
+        </section>
+
+        <section id="making" class="content-section">
+            <hr>
+            <h3>📖 Making: Recipe Blog</h3>
+            <p>Learn how to cook popular dishes from different cuisines!</p>
+            
+            <div class="tabs making-tabs" style="margin-bottom: 2rem;">
+                <button class="tab-btn making-tab-btn active" data-cuisine="korean">Korean</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="japanese">Japanese</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="chinese">Chinese</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="dessert">Dessert</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="latenight">Late Night</button>
+            </div>
+
+            <div id="making-content" class="blog-post">
+                <!-- Blog content will be injected here -->
+            </div>
         </section>
 
         <section id="contact" class="partnership-section content-section">

@@ -288,6 +288,152 @@ function runLocalSearch(input) {
     });
 }
 
+
+// --- Making: Recipe Blog Logic ---
+const blogRecipes = {
+    korean: {
+        title: "Kimchi Fried Rice (Kimchi Bokkeumbap)",
+        image: "https://loremflickr.com/600/400/kimchi,rice",
+        intro: "A staple of Korean home cooking, Kimchi Fried Rice is the perfect way to use up aging kimchi. It's spicy, savory, and incredibly satisfying.",
+        ingredients: [
+            "1 cup Kimchi, chopped",
+            "2 cups cooked rice (day-old is best)",
+            "100g Pork belly or Spam, diced",
+            "1 tbsp Gochujang (Korean chili paste)",
+            "1 tbsp Sesame oil",
+            "1 Fried egg (for topping)",
+            "Seaweed flakes (optional)"
+        ],
+        steps: [
+            "Heat a pan over medium-high heat and stir-fry the diced pork/Spam until browned.",
+            "Add the chopped kimchi and stir-fry for 3-4 minutes until softened.",
+            "Mix in the Gochujang and cook for another minute.",
+            "Add the rice and break up any clumps, mixing thoroughly with the kimchi base.",
+            "Drizzle with sesame oil and remove from heat.",
+            "Serve topped with a sunny-side-up fried egg and seaweed flakes."
+        ]
+    },
+    japanese: {
+        title: "Chicken Teriyaki",
+        image: "https://loremflickr.com/600/400/teriyaki,chicken",
+        intro: "Chicken Teriyaki features tender chicken glazed in a sweet and savory sauce. It's a classic Japanese dish that's loved worldwide.",
+        ingredients: [
+            "2 Chicken thighs, boneless and skin-on",
+            "2 tbsp Soy sauce",
+            "2 tbsp Mirin",
+            "2 tbsp Sake (or water)",
+            "1 tbsp Sugar",
+            "Spring onions for garnish"
+        ],
+        steps: [
+            "Prick the chicken skin with a fork and season lightly with salt.",
+            "Pan-fry the chicken skin-side down until crispy and golden brown. Flip and cook for 2 more minutes.",
+            "Mix soy sauce, mirin, sake, and sugar in a small bowl.",
+            "Wipe excess oil from the pan and pour in the sauce.",
+            "Simmer until the sauce thickens and glazes the chicken beautifully.",
+            "Slice the chicken, serve over rice, and garnish with spring onions."
+        ]
+    },
+    chinese: {
+        title: "Tomato and Egg Stir-fry",
+        image: "https://loremflickr.com/600/400/tomato,egg",
+        intro: "A humble yet delicious Chinese comfort food. The sweetness of the tomatoes balances perfectly with the savory fluffy eggs.",
+        ingredients: [
+            "3 Eggs, beaten",
+            "2 large Tomatoes, cut into wedges",
+            "1 Scallion, chopped",
+            "1 tsp Sugar",
+            "Salt and vegetable oil",
+            "1 tsp Sesame oil (optional)"
+        ],
+        steps: [
+            "Scramble the eggs in a hot wok with oil until just set, then remove and set aside.",
+            "Add a bit more oil and stir-fry the tomatoes until they release their juices.",
+            "Add sugar and salt, smashing the tomatoes slightly to create a sauce.",
+            "Return the eggs to the wok and mix gently to combine.",
+            "Garnish with scallions and a drizzle of sesame oil. Serve with steamed rice."
+        ]
+    },
+    dessert: {
+        title: "Classic Chocolate Brownies",
+        image: "https://loremflickr.com/600/400/brownie",
+        intro: "Fudgy, chewy, and chocolaty. These brownies are the ultimate treat for any chocolate lover.",
+        ingredients: [
+            "1/2 cup Unsalted butter, melted",
+            "1 cup Sugar",
+            "2 Eggs",
+            "1 tsp Vanilla extract",
+            "1/3 cup Cocoa powder",
+            "1/2 cup All-purpose flour",
+            "1/4 tsp Salt",
+            "1/4 tsp Baking powder"
+        ],
+        steps: [
+            "Preheat oven to 350°F (175°C) and grease a baking pan.",
+            "In a large bowl, mix melted butter and sugar. Beat in eggs and vanilla.",
+            "Sift in cocoa powder, flour, salt, and baking powder. Fold gently until just combined.",
+            "Pour batter into the pan and spread evenly.",
+            "Bake for 20-25 minutes. Let cool completely before slicing."
+        ]
+    },
+    latenight: {
+        title: "Spicy Ramen Hack (Kujirai Ramen)",
+        image: "https://loremflickr.com/600/400/ramen,egg",
+        intro: "A viral way to eat instant ramen—less soup, more flavor, and a creamy egg to top it off. Perfect for late-night cravings.",
+        ingredients: [
+            "1 pack Spicy instant ramen (e.g., Shin Ramyun)",
+            "1 Egg",
+            "1 slice American cheese",
+            "Green onions",
+            "350ml Water (about half the usual amount)"
+        ],
+        steps: [
+            "Boil water in a shallow pan and add the noodles and vegetable flakes.",
+            "Once noodles start to soften, add only HALF the soup powder seasoning.",
+            "Crack an egg into the center of the noodles and place cheese on top.",
+            "Cover with a lid and simmer on low heat for 2 minutes until the egg white is set.",
+            "Garnish with green onions and enjoy the rich, creamy noodles."
+        ]
+    }
+};
+
+const makingTabs = document.querySelectorAll('.making-tab-btn');
+const makingContent = document.getElementById('making-content');
+
+function renderRecipe(cuisine) {
+    const recipe = blogRecipes[cuisine];
+    // Add timestamp to image to avoid caching issues with loremflickr
+    const imgUrl = `${recipe.image}?random=${Date.now()}`;
+    
+    makingContent.innerHTML = `
+        <img src="${imgUrl}" alt="${recipe.title}" class="blog-header-img" loading="lazy">
+        <h2 class="blog-title">${recipe.title}</h2>
+        <p class="blog-intro">${recipe.intro}</p>
+        
+        <div class="recipe-section-title">🛒 Ingredients</div>
+        <ul class="ingredient-list">
+            ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+        </ul>
+        
+        <div class="recipe-section-title">🍳 Instructions</div>
+        <ol class="step-list">
+            ${recipe.steps.map(step => `<li>${step}</li>`).join('')}
+        </ol>
+    `;
+}
+
+// Event Listeners for Making Tabs
+makingTabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+        makingTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderRecipe(btn.dataset.cuisine);
+    });
+});
+
+// Initial Render for Making Section
+renderRecipe('korean');
+
 let currentMeal = 'dinner';
 const generateButton = document.getElementById('generate-button');
 const resultContainer = document.getElementById('result-container');

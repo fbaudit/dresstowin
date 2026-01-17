@@ -514,6 +514,70 @@ body.dark-mode .recipe-info p {
     cursor: pointer;
 }
 
+/* Making (Blog) Section */
+.blog-post {
+    background-color: var(--container-bg);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #eee;
+}
+
+body.dark-mode .blog-post {
+    border-color: #333;
+}
+
+.blog-header-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.blog-title {
+    color: var(--button-bg);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.blog-intro {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.recipe-section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-color);
+    border-left: 4px solid var(--accent-color);
+    padding-left: 10px;
+}
+
+.ingredient-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.step-list {
+    list-style-type: decimal;
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+.step-list li {
+    margin-bottom: 10px;
+}
+
 /* AI Test Section */
 .ai-test-section {
     margin-top: 2.5rem;
