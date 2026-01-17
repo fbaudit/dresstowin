@@ -248,9 +248,7 @@ document.getElementById('fridge-btn').addEventListener('click', async () => {
     
     // Fallback to Local Logic if no API Key
     if (!apiKey) {
-        if(confirm("AI API Key is missing. Do you want to use basic search instead?\n(For creative AI recipes, click 'Cancel' and set your key in Settings ⚙️)")) {
-            runLocalSearch(input);
-        }
+        runLocalSearch(input);
         return;
     }
 
