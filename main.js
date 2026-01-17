@@ -99,16 +99,54 @@ const recipesDB = [
     { name: "Omelet", ingredients: ["egg", "cheese", "onion", "carrot"], description: "Fluffy eggs with melted cheese.", image: "https://loremflickr.com/100/100/omelet" }
 ];
 
+// Korean to English Ingredient Map
+const ingredientMap = {
+    "계란": "egg", "달걀": "egg",
+    "밥": "rice", "쌀": "rice",
+    "대파": "green onion", "파": "green onion",
+    "김치": "kimchi",
+    "햄": "ham", "스팸": "ham",
+    "돼지고기": "pork", "고기": "pork",
+    "간장": "soy sauce",
+    "버터": "butter",
+    "파스타": "pasta", "면": "pasta",
+    "마늘": "garlic",
+    "올리브오일": "olive oil", "기름": "oil",
+    "참치": "tuna",
+    "마요네즈": "mayonnaise",
+    "빵": "bread", "식빵": "bread",
+    "치즈": "cheese",
+    "우유": "milk",
+    "설탕": "sugar",
+    "감자": "potato",
+    "양파": "onion",
+    "당근": "carrot",
+    "라면": "ramen",
+    "두부": "tofu",
+    "토마토": "tomato"
+};
+
 document.getElementById('fridge-btn').addEventListener('click', () => {
     const input = document.getElementById('fridge-input').value.toLowerCase();
     const resultDiv = document.getElementById('fridge-result');
     
     if (!input.trim()) {
-        alert("Please enter at least one ingredient!");
+        alert("Please enter at least one ingredient! (재료를 입력해주세요)");
         return;
     }
 
-    const userIngredients = input.split(',').map(i => i.trim());
+    // Split input and map Korean to English if necessary
+    const rawIngredients = input.split(',').map(i => i.trim());
+    let userIngredients = [];
+
+    rawIngredients.forEach(ing => {
+        // Add raw input
+        userIngredients.push(ing);
+        // Add mapped English term if exists
+        if (ingredientMap[ing]) {
+            userIngredients.push(ingredientMap[ing]);
+        }
+    });
     
     // Scoring logic
     const suggestions = recipesDB.map(recipe => {
@@ -117,6 +155,7 @@ document.getElementById('fridge-btn').addEventListener('click', () => {
         
         // Check how many recipe ingredients match user input
         recipe.ingredients.forEach(ing => {
+            // Check if user input (or mapped English) contains the recipe ingredient
             if (userIngredients.some(ui => ui.includes(ing) || ing.includes(ui))) {
                 matchCount++;
             } else {
@@ -135,7 +174,7 @@ document.getElementById('fridge-btn').addEventListener('click', () => {
     resultDiv.innerHTML = '';
 
     if (suggestions.length === 0) {
-        resultDiv.innerHTML = '<p>No matching recipes found. Try adding basic ingredients like "egg", "rice", or "bread".</p>';
+        resultDiv.innerHTML = '<p>No matching recipes found. Try adding basic ingredients like "egg", "rice", or "bread". (일치하는 레시피가 없습니다. 계란, 밥, 빵 등을 추가해보세요.)</p>';
         return;
     }
 
