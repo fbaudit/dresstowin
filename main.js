@@ -123,58 +123,153 @@ const ingredientMap = {
     "당근": "carrot",
     "라면": "ramen",
     "두부": "tofu",
-    "토마토": "tomato"
+    "토마토": "tomato",
+    "양배추": "cabbage",
+    "소고기": "beef",
+    "닭고기": "chicken",
+    "고추장": "gochujang",
+    "된장": "doenjang"
 };
 
-document.getElementById('fridge-btn').addEventListener('click', () => {
-    const input = document.getElementById('fridge-input').value.toLowerCase();
+// --- API Key Management ---
+const settingsBtn = document.getElementById('settings-btn');
+const modal = document.getElementById('settings-modal');
+const closeModal = document.querySelector('.close-modal');
+const saveKeyBtn = document.getElementById('save-api-key');
+const removeKeyBtn = document.getElementById('remove-api-key');
+const apiKeyInput = document.getElementById('api-key-input');
+
+settingsBtn.onclick = () => {
+    modal.style.display = "block";
+    apiKeyInput.value = localStorage.getItem('gemini_api_key') || '';
+}
+closeModal.onclick = () => modal.style.display = "none";
+window.onclick = (event) => {
+    if (event.target == modal) modal.style.display = "none";
+}
+
+saveKeyBtn.onclick = () => {
+    const key = apiKeyInput.value.trim();
+    if (key) {
+        localStorage.setItem('gemini_api_key', key);
+        alert("API Key saved locally!");
+        modal.style.display = "none";
+    } else {
+        alert("Please enter a valid key.");
+    }
+}
+
+removeKeyBtn.onclick = () => {
+    localStorage.removeItem('gemini_api_key');
+    apiKeyInput.value = '';
+    alert("API Key removed.");
+}
+
+// --- Recipe Search Logic ---
+document.getElementById('fridge-btn').addEventListener('click', async () => {
+    const input = document.getElementById('fridge-input').value;
     const resultDiv = document.getElementById('fridge-result');
+    const btn = document.getElementById('fridge-btn');
     
     if (!input.trim()) {
         alert("Please enter at least one ingredient! (재료를 입력해주세요)");
         return;
     }
 
-    // Split input and map Korean to English if necessary
-    const rawIngredients = input.split(',').map(i => i.trim());
-    let userIngredients = [];
-
-    rawIngredients.forEach(ing => {
-        // Add raw input
-        userIngredients.push(ing);
-        // Add mapped English term if exists
-        if (ingredientMap[ing]) {
-            userIngredients.push(ingredientMap[ing]);
+    const apiKey = localStorage.getItem('gemini_api_key');
+    
+    // Fallback to Local Logic if no API Key
+    if (!apiKey) {
+        if(confirm("AI API Key is missing. Do you want to use basic search instead?\n(For creative AI recipes, click 'Cancel' and set your key in Settings ⚙️)")) {
+            runLocalSearch(input);
         }
+        return;
+    }
+
+    // AI Generation Logic
+    btn.innerHTML = "🤖 AI Chef is thinking...";
+    btn.disabled = true;
+    resultDiv.innerHTML = '<div class="loader">Cooking up recipes...</div>';
+    resultDiv.style.display = 'flex';
+
+    try {
+        const prompt = `
+            You are a creative chef. Suggest exactly 3 distinct recipes based on these ingredients: "${input}".
+            You can assume basic pantry items (salt, oil, pepper) are available.
+            Return ONLY a JSON object with this structure:
+            {
+                "recipes": [
+                    { "name": "Recipe Name", "description": "Short appetizing description (1 sentence)", "image_keyword": "single_english_keyword_for_image_search" }
+                ]
+            }
+        `;
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }]
+            })
+        });
+
+        if (!response.ok) throw new Error("API Call Failed");
+
+        const data = await response.json();
+        const text = data.candidates[0].content.parts[0].text;
+        
+        // Parse JSON from text (sometimes Gemini wraps in ```json ... ```)
+        const jsonString = text.replace(/```json|```/g, '').trim();
+        const recipeData = JSON.parse(jsonString);
+
+        resultDiv.innerHTML = '';
+        recipeData.recipes.forEach(item => {
+            resultDiv.innerHTML += `
+                <div class="recipe-suggestion-card">
+                    <img src="https://loremflickr.com/100/100/${item.image_keyword}?random=${Math.random()}" class="recipe-thumb" alt="${item.name}">
+                    <div class="recipe-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.description}</p>
+                        <p style="font-size: 0.8rem; color: #4285F4; margin-top:5px;">✨ AI Generated Recipe</p>
+                    </div>
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        console.error(error);
+        alert("AI Generation failed. Check your API Key or Quota. Falling back to local search.");
+        runLocalSearch(input);
+    } finally {
+        btn.innerHTML = "Find Recipes with AI";
+        btn.disabled = false;
+    }
+});
+
+function runLocalSearch(input) {
+    const resultDiv = document.getElementById('fridge-result');
+    const userIngredients = input.toLowerCase().split(',').map(i => {
+        let trimmed = i.trim();
+        return ingredientMap[trimmed] || trimmed;
     });
     
-    // Scoring logic
     const suggestions = recipesDB.map(recipe => {
         let matchCount = 0;
         let missing = [];
-        
-        // Check how many recipe ingredients match user input
         recipe.ingredients.forEach(ing => {
-            // Check if user input (or mapped English) contains the recipe ingredient
-            if (userIngredients.some(ui => ui.includes(ing) || ing.includes(ui))) {
-                matchCount++;
-            } else {
-                missing.push(ing);
-            }
+            if (userIngredients.some(ui => ui.includes(ing) || ing.includes(ui))) matchCount++;
+            else missing.push(ing);
         });
-
         return { ...recipe, matchCount, missing };
     })
-    .filter(item => item.matchCount > 0) // Only keep items with at least one match
-    .sort((a, b) => b.matchCount - a.matchCount) // Sort by highest match
-    .slice(0, 3); // Take top 3
+    .filter(item => item.matchCount > 0)
+    .sort((a, b) => b.matchCount - a.matchCount)
+    .slice(0, 3);
 
-    // Display Results
-    resultDiv.style.display = 'flex';
     resultDiv.innerHTML = '';
+    resultDiv.style.display = 'flex';
 
     if (suggestions.length === 0) {
-        resultDiv.innerHTML = '<p>No matching recipes found. Try adding basic ingredients like "egg", "rice", or "bread". (일치하는 레시피가 없습니다. 계란, 밥, 빵 등을 추가해보세요.)</p>';
+        resultDiv.innerHTML = '<p>No matching local recipes found. Try adding basic ingredients or use an AI Key for better results.</p>';
         return;
     }
 
@@ -191,7 +286,7 @@ document.getElementById('fridge-btn').addEventListener('click', () => {
             </div>
         `;
     });
-});
+}
 
 let currentMeal = 'dinner';
 const generateButton = document.getElementById('generate-button');
