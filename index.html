@@ -67,10 +67,12 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8457034044613962"
-     crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8457034044613962" crossorigin="anonymous"></script>
+    <!-- Defer non-critical scripts to eliminate render-blocking -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js" defer></script>
+    <script src="translations.js" defer></script>
+    <script src="main.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -130,7 +132,7 @@
                     <p>To use the Generative AI Chef, please enter your Google Gemini API Key. It will be stored locally in your browser.</p>
                     <input type="password" id="api-key-input" placeholder="Paste your Gemini API Key here" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ddd;">
                     <p style="font-size: 0.8rem;">
-                        Don't have a key? <a href="https://aistudio.google.com/app/apikey" target="_blank">Get one for free here</a>.
+                        Don't have a key? <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Get one for free here</a>.
                     </p>
                     <button id="save-api-key" class="action-btn">Save Key</button>
                     <button id="remove-api-key" class="action-btn" style="background-color: #f44336; margin-top: 5px;">Remove Key</button>
@@ -246,7 +248,5 @@
         </script>
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
-    <script src="translations.js"></script>
-    <script src="main.js"></script>
 </body>
 </html>

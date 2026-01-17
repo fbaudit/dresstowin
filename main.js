@@ -713,14 +713,14 @@ generateButton.addEventListener('click', () => {
                 
                 <div class="location-controls">
                     <div class="radius-control">
-                        <label for="radius-slider">Search Radius: <span id="radius-value">1</span> km</label>
+                        <label for="radius-slider">${(translations[currentLang] && translations[currentLang].search_radius_label) || 'Search Radius:'} <span id="radius-value">1</span> km</label>
                         <input type="range" id="radius-slider" min="0.5" max="10" step="0.5" value="1">
                     </div>
                     <button onclick="findNearbyRestaurants('${selectedFood.name.replace(/'/g, "\\'")}')" class="find-nearby-btn">
-                        📍 Find Nearby Restaurants
+                        ${(translations[currentLang] && translations[currentLang].btn_find_nearby) || '📍 Find Nearby Restaurants'}
                     </button>
-                    <a href="https://www.google.com/search?q=${encodeURIComponent(selectedFood.name + ' nutrition facts calories sodium')}" target="_blank" class="search-link">
-                        🔍 Search Nutrition Info
+                    <a href="https://www.google.com/search?q=${encodeURIComponent(selectedFood.name + ' nutrition facts calories sodium')}" target="_blank" rel="noopener noreferrer" class="search-link">
+                        ${(translations[currentLang] && translations[currentLang].btn_search_nutrition) || '🔍 Search Nutrition Info'}
                     </a>
                 </div>
             </div>
