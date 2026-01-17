@@ -124,6 +124,29 @@ h1 {
     opacity: 0.9;
 }
 
+.nutrition-info {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.nutrition-info span {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+body.dark-mode .nutrition-info span {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+}
+
 @keyframes popIn {
     from {
         opacity: 0;
