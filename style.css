@@ -115,6 +115,14 @@ h1 {
     font-size: 1.3rem; /* Slightly smaller to fit */
 }
 
+.food-description {
+    color: var(--text-color);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
 @keyframes popIn {
     from {
         opacity: 0;

@@ -27,39 +27,39 @@ themeToggleBtn.addEventListener('click', function () {
 // Food Recommendation Logic
 const foodData = {
     breakfast: [
-        { name: "Toast & Fried Eggs", image: "https://loremflickr.com/600/400/toast,eggs" },
-        { name: "Pancakes with Syrup", image: "https://loremflickr.com/600/400/pancakes" },
-        { name: "Cereal & Milk", image: "https://loremflickr.com/600/400/cereal,milk" },
-        { name: "Oatmeal with Fruits", image: "https://loremflickr.com/600/400/oatmeal" },
-        { name: "Bagel with Cream Cheese", image: "https://loremflickr.com/600/400/bagel" },
-        { name: "Korean Style Breakfast (Rice & Soup)", image: "https://loremflickr.com/600/400/korean,breakfast" },
-        { name: "Breakfast Sandwich", image: "https://loremflickr.com/600/400/sandwich" },
-        { name: "Yogurt & Granola", image: "https://loremflickr.com/600/400/yogurt" }
+        { name: "Toast & Fried Eggs", image: "https://loremflickr.com/600/400/toast,eggs", description: "Classic and simple start to the day." },
+        { name: "Pancakes with Syrup", image: "https://loremflickr.com/600/400/pancakes", description: "Fluffy pancakes topped with sweet maple syrup." },
+        { name: "Cereal & Milk", image: "https://loremflickr.com/600/400/cereal,milk", description: "Quick and easy energy boost." },
+        { name: "Oatmeal with Fruits", image: "https://loremflickr.com/600/400/oatmeal", description: "Healthy and warm oatmeal topped with fresh fruits." },
+        { name: "Bagel with Cream Cheese", image: "https://loremflickr.com/600/400/bagel", description: "Chewy bagel spread with smooth cream cheese." },
+        { name: "Korean Style Breakfast (Rice & Soup)", image: "https://loremflickr.com/600/400/korean,breakfast", description: "Hearty meal with steamed rice, soup, and side dishes." },
+        { name: "Breakfast Sandwich", image: "https://loremflickr.com/600/400/sandwich", description: "Everything you need in one hand." },
+        { name: "Yogurt & Granola", image: "https://loremflickr.com/600/400/yogurt", description: "Light and refreshing with a crunch." }
     ],
     lunch: [
-        { name: "Kimchi Stew (Kimchi Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew" },
-        { name: "Bibimbap", image: "https://loremflickr.com/600/400/bibimbap" },
-        { name: "Pork Cutlet (Tonkatsu)", image: "https://loremflickr.com/600/400/tonkatsu" },
-        { name: "Pasta (Tomato/Cream)", image: "https://loremflickr.com/600/400/pasta" },
-        { name: "Ramen / Noodles", image: "https://loremflickr.com/600/400/ramen" },
-        { name: "Fried Rice", image: "https://loremflickr.com/600/400/fried,rice" },
-        { name: "Sub Sandwich", image: "https://loremflickr.com/600/400/sub,sandwich" },
-        { name: "Tteokbokki (Spicy Rice Cakes)", image: "https://loremflickr.com/600/400/tteokbokki" },
-        { name: "Gimbap", image: "https://loremflickr.com/600/400/gimbap" }
+        { name: "Kimchi Stew (Kimchi Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew", description: "Spicy and savory stew with kimchi and pork." },
+        { name: "Bibimbap", image: "https://loremflickr.com/600/400/bibimbap", description: "Mixed rice with vegetables, meat, and gochujang sauce." },
+        { name: "Pork Cutlet (Tonkatsu)", image: "https://loremflickr.com/600/400/tonkatsu", description: "Crispy fried pork cutlet with savory sauce." },
+        { name: "Pasta (Tomato/Cream)", image: "https://loremflickr.com/600/400/pasta", description: "Classic Italian noodles in tomato or cream sauce." },
+        { name: "Ramen / Noodles", image: "https://loremflickr.com/600/400/ramen", description: "Quick, hot, and satisfying noodles." },
+        { name: "Fried Rice", image: "https://loremflickr.com/600/400/fried,rice", description: "Wok-fried rice with vegetables and meat." },
+        { name: "Sub Sandwich", image: "https://loremflickr.com/600/400/sub,sandwich", description: "Fresh ingredients packed in a long roll." },
+        { name: "Tteokbokki (Spicy Rice Cakes)", image: "https://loremflickr.com/600/400/tteokbokki", description: "Spicy and chewy rice cakes, a popular street food." },
+        { name: "Gimbap", image: "https://loremflickr.com/600/400/gimbap", description: "Rice and fillings rolled in dried seaweed." }
     ],
     dinner: [
-        { name: "Korean BBQ (Samgyeopsal/Galbi)", image: "https://loremflickr.com/600/400/korean,bbq" },
-        { name: "Chinese Cuisine (Jajangmyeon/Tangsuyuk)", image: "https://loremflickr.com/600/400/chinese,food" },
-        { name: "Japanese Sushi/Sashimi", image: "https://loremflickr.com/600/400/sushi,sashimi" },
-        { name: "Western Steak & Pasta", image: "https://loremflickr.com/600/400/steak,pasta" },
-        { name: "Pizza & Salad Bar", image: "https://loremflickr.com/600/400/pizza" },
-        { name: "Fried Chicken & Beer (Chimaek)", image: "https://loremflickr.com/600/400/fried,chicken" },
-        { name: "Family Restaurant (Outback/VIPS)", image: "https://loremflickr.com/600/400/restaurant,food" },
-        { name: "Vietnamese Pho", image: "https://loremflickr.com/600/400/pho,noodle" },
-        { name: "Thai Cuisine", image: "https://loremflickr.com/600/400/thai,food" },
-        { name: "Shabu-Shabu", image: "https://loremflickr.com/600/400/shabu,hotpot" },
-        { name: "Korean Stew (Kimchi/Budae Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew" },
-        { name: "Burger & Fries", image: "https://loremflickr.com/600/400/burger,fries" }
+        { name: "Korean BBQ (Samgyeopsal/Galbi)", image: "https://loremflickr.com/600/400/korean,bbq", description: "Grill your own succulent meat at the table." },
+        { name: "Chinese Cuisine (Jajangmyeon/Tangsuyuk)", image: "https://loremflickr.com/600/400/chinese,food", description: "Savory black bean noodles or sweet and sour pork." },
+        { name: "Japanese Sushi/Sashimi", image: "https://loremflickr.com/600/400/sushi,sashimi", description: "Fresh raw fish and vinegared rice." },
+        { name: "Western Steak & Pasta", image: "https://loremflickr.com/600/400/steak,pasta", description: "Juicy steak paired with delicious pasta." },
+        { name: "Pizza & Salad Bar", image: "https://loremflickr.com/600/400/pizza", description: "Cheesy pizza with a variety of fresh salads." },
+        { name: "Fried Chicken & Beer (Chimaek)", image: "https://loremflickr.com/600/400/fried,chicken", description: "Crispy fried chicken paired with cold beer." },
+        { name: "Family Restaurant (Outback/VIPS)", image: "https://loremflickr.com/600/400/restaurant,food", description: "A variety of dishes for the whole family." },
+        { name: "Vietnamese Pho", image: "https://loremflickr.com/600/400/pho,noodle", description: "Warm and aromatic beef noodle soup." },
+        { name: "Thai Cuisine", image: "https://loremflickr.com/600/400/thai,food", description: "Exotic flavors with spices and herbs." },
+        { name: "Shabu-Shabu", image: "https://loremflickr.com/600/400/shabu,hotpot", description: "Hot pot with thinly sliced meat and vegetables." },
+        { name: "Korean Stew (Kimchi/Budae Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew", description: "Deep and rich flavors of Korean stews." },
+        { name: "Burger & Fries", image: "https://loremflickr.com/600/400/burger,fries", description: "Juicy burger with golden crispy fries." }
     ]
 };
 
@@ -98,6 +98,7 @@ generateButton.addEventListener('click', () => {
             <div class="food-card">
                 <img src="${imageUrl}" alt="${selectedFood.name}" class="food-image">
                 <h2>${selectedFood.name}</h2>
+                <p class="food-description">${selectedFood.description}</p>
             </div>
         `;
     }, 500); // 0.5s delay for effect
