@@ -399,6 +399,10 @@ footer a {
     background-color: #388E3C;
 }
 
+#stop-ai-test-btn:hover {
+    background-color: #d32f2f !important;
+}
+
 body.dark-mode #submit-button {
     background-color: #555;
 }

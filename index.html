@@ -149,7 +149,10 @@
             <h3 data-i18n="aidecision_title">👨 Man Like vs Woman Like Ai Decision 👩</h3>
             <p data-i18n="aidecision_desc1">Wondering if your meal choice is traditionally more popular among men or women? Show your food to the camera! This feature uses Google's Teachable Machine technology to analyze food patterns and predict gender preferences. Images are processed locally in your browser and are never sent to a server, ensuring your privacy.</p>
             <p style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold;" data-i18n="aidecision_desc2">Show your food to the camera!</p>
-            <button type="button" id="start-ai-test-btn" class="action-btn" data-i18n="btn_start_camera">Start Camera</button>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button type="button" id="start-ai-test-btn" class="action-btn" data-i18n="btn_start_camera">Start Camera</button>
+                <button type="button" id="stop-ai-test-btn" class="action-btn" style="background-color: #f44336; display: none;">Stop Camera</button>
+            </div>
             <div id="webcam-container"></div>
             <div id="label-container"></div>
         </section>

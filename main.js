@@ -784,13 +784,16 @@ function findNearbyRestaurants(foodName) {
 const URL_TM = "https://teachablemachine.withgoogle.com/models/aDzen0qG6/";
 let model, webcam, labelContainer, maxPredictions;
 let isRunning = false;
+let animationId;
 
 async function initFoodAITest() {
     if (isRunning) return;
     
-    const btn = document.getElementById("start-ai-test-btn");
-    btn.textContent = "Loading...";
-    btn.disabled = true;
+    const startBtn = document.getElementById("start-ai-test-btn");
+    const stopBtn = document.getElementById("stop-ai-test-btn");
+    
+    startBtn.textContent = "Loading...";
+    startBtn.disabled = true;
 
     try {
         const modelURL = URL_TM + "model.json";
@@ -804,50 +807,80 @@ async function initFoodAITest() {
         webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
         await webcam.play();
+        
+        // Start Loop
+        isRunning = true;
         window.requestAnimationFrame(loop);
 
-        // append elements to the DOM
+        // UI Updates
         const webcamContainer = document.getElementById("webcam-container");
-        webcamContainer.innerHTML = ""; // Clear if restarting
+        webcamContainer.innerHTML = "";
         webcam.canvas.style.borderRadius = "10px";
         webcamContainer.appendChild(webcam.canvas);
 
         labelContainer = document.getElementById("label-container");
-        labelContainer.innerHTML = ""; // Clear previous
-        for (let i = 0; i < maxPredictions; i++) { // and class labels
-            // Create a bar container
+        labelContainer.innerHTML = "";
+        for (let i = 0; i < maxPredictions; i++) {
             let barWrapper = document.createElement("div");
             barWrapper.className = "label-wrapper";
-            
             let nameSpan = document.createElement("span");
             nameSpan.className = "label-name";
-            
             let barBg = document.createElement("div");
             barBg.className = "label-bar-bg";
-            
             let barFill = document.createElement("div");
             barFill.className = "label-bar-fill";
-            
             barBg.appendChild(barFill);
             barWrapper.appendChild(nameSpan);
             barWrapper.appendChild(barBg);
             labelContainer.appendChild(barWrapper);
         }
         
-        btn.textContent = "Running...";
-        isRunning = true;
+        startBtn.textContent = "Running...";
+        startBtn.style.display = "none";
+        stopBtn.style.display = "block";
+        stopBtn.disabled = false;
+
     } catch (e) {
         console.error(e);
-        btn.textContent = "Error (Check Camera)";
-        btn.disabled = false;
+        startBtn.textContent = "Error (Check Camera)";
+        startBtn.disabled = false;
         alert("Could not access the camera. Please ensure you have given permission.");
     }
 }
 
+function stopFoodAITest() {
+    if (!isRunning) return;
+
+    if (webcam) {
+        webcam.stop();
+    }
+    if (animationId) {
+        window.cancelAnimationFrame(animationId);
+    }
+    
+    isRunning = false;
+    
+    const startBtn = document.getElementById("start-ai-test-btn");
+    const stopBtn = document.getElementById("stop-ai-test-btn");
+    const webcamContainer = document.getElementById("webcam-container");
+    const labelContainer = document.getElementById("label-container");
+
+    webcamContainer.innerHTML = "";
+    labelContainer.innerHTML = "";
+    
+    startBtn.style.display = "block";
+    startBtn.disabled = false;
+    // Restore original text based on lang (simplified for now)
+    startBtn.textContent = (translations[currentLang] && translations[currentLang].btn_start_camera) || "Start Camera";
+    
+    stopBtn.style.display = "none";
+}
+
 async function loop() {
+    if(!isRunning) return;
     webcam.update(); // update the webcam frame
     await predict();
-    window.requestAnimationFrame(loop);
+    animationId = window.requestAnimationFrame(loop);
 }
 
 async function predict() {
@@ -881,3 +914,4 @@ async function predict() {
 }
 
 document.getElementById('start-ai-test-btn').addEventListener('click', initFoodAITest);
+document.getElementById('stop-ai-test-btn').addEventListener('click', stopFoodAITest);
