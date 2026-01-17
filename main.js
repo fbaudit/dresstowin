@@ -105,15 +105,15 @@ generateButton.addEventListener('click', () => {
 });
 
 
-// Teachable Machine - Animal Test Logic
+// Teachable Machine - AI Test Logic (Man vs Woman Food Preference)
 const URL_TM = "https://teachablemachine.withgoogle.com/models/aDzen0qG6/";
 let model, webcam, labelContainer, maxPredictions;
 let isRunning = false;
 
-async function initAnimalTest() {
+async function initFoodAITest() {
     if (isRunning) return;
     
-    const btn = document.getElementById("start-animal-test-btn");
+    const btn = document.getElementById("start-ai-test-btn");
     btn.textContent = "Loading...";
     btn.disabled = true;
 
@@ -133,7 +133,7 @@ async function initAnimalTest() {
 
         // append elements to the DOM
         const webcamContainer = document.getElementById("webcam-container");
-        webcamContainer.innerHTML = ""; // Clear if restarting (though simpler logic here just runs once)
+        webcamContainer.innerHTML = ""; // Clear if restarting
         webcam.canvas.style.borderRadius = "10px";
         webcamContainer.appendChild(webcam.canvas);
 
@@ -183,7 +183,12 @@ async function predict() {
     const names = document.getElementsByClassName("label-name");
 
     for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction = prediction[i].className;
+        let classPrediction = prediction[i].className;
+        
+        // Map Dog/Cat labels to Man Like/Woman Like for the context of food preference
+        if (classPrediction === "Dog") classPrediction = "Man Like 👨";
+        if (classPrediction === "Cat") classPrediction = "Woman Like 👩";
+
         const probability = prediction[i].probability.toFixed(2);
         
         names[i].textContent = `${classPrediction} (${Math.round(probability * 100)}%)`;
@@ -200,4 +205,4 @@ async function predict() {
     }
 }
 
-document.getElementById('start-animal-test-btn').addEventListener('click', initAnimalTest);
+document.getElementById('start-ai-test-btn').addEventListener('click', initFoodAITest);

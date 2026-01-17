@@ -322,13 +322,13 @@ body.dark-mode #submit-button:hover {
     background-color: #777;
 }
 
-/* Animal Test Section */
-.animal-test-section {
+/* AI Test Section */
+.ai-test-section {
     margin-top: 2.5rem;
     text-align: center;
 }
 
-.animal-test-section hr {
+.ai-test-section hr {
     border: 0;
     border-top: 1px solid #eee;
     margin-bottom: 1.5rem;
