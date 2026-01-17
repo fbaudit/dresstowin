@@ -434,6 +434,155 @@ makingTabs.forEach(btn => {
 // Initial Render for Making Section
 renderRecipe('korean');
 
+
+// --- Who Pay: Ladder Game Logic ---
+const startLadderBtn = document.getElementById('start-ladder-btn');
+const ladderCanvas = document.getElementById('ladder-canvas');
+const ladderResult = document.getElementById('ladder-result');
+const ctx = ladderCanvas.getContext('2d');
+
+startLadderBtn.addEventListener('click', () => {
+    const input = document.getElementById('ladder-players').value;
+    if (!input.trim()) {
+        alert("Please enter player names!");
+        return;
+    }
+
+    const players = input.split(',').map(p => p.trim()).filter(p => p !== "");
+    if (players.length < 2) {
+        alert("Need at least 2 players!");
+        return;
+    }
+
+    document.getElementById('ladder-container').style.display = 'block';
+    playLadderGame(players);
+});
+
+function playLadderGame(players) {
+    const numPlayers = players.length;
+    // Canvas Setup
+    const width = Math.min(window.innerWidth - 40, numPlayers * 100); // Responsive width
+    const height = 400;
+    const padding = 50;
+    const colWidth = (width - padding * 2) / (numPlayers - 1);
+    
+    ladderCanvas.width = width;
+    ladderCanvas.height = height;
+
+    // Reset
+    ctx.clearRect(0, 0, width, height);
+    ladderResult.textContent = "Calculating...";
+
+    // Draw Vertical Lines
+    ctx.strokeStyle = "#333";
+    ctx.lineWidth = 4;
+    ctx.font = "bold 16px Arial";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#333";
+
+    const lineX = [];
+    for (let i = 0; i < numPlayers; i++) {
+        const x = padding + i * colWidth;
+        lineX.push(x);
+        
+        // Name at top
+        ctx.fillText(players[i], x, 30);
+        
+        // Line
+        ctx.beginPath();
+        ctx.moveTo(x, 50);
+        ctx.lineTo(x, height - 50);
+        ctx.stroke();
+        
+        // Result placeholder at bottom
+        ctx.fillText("?", x, height - 20);
+    }
+
+    // Generate Random Horizontal Lines (Bridges)
+    // Structure: bridges[colIndex] = [y1, y2, ...]
+    const bridges = Array.from({ length: numPlayers - 1 }, () => []);
+    const numBridgesPerCol = 4; // Approx bridges per gap
+
+    for (let i = 0; i < numPlayers - 1; i++) {
+        for (let j = 0; j < numBridgesPerCol; j++) {
+            // Random Y between top and bottom padding
+            const y = 60 + Math.random() * (height - 120);
+            bridges[i].push(y);
+        }
+        bridges[i].sort((a, b) => a - b); // Sort by height
+    }
+
+    // Draw Bridges
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#666";
+    for (let i = 0; i < numPlayers - 1; i++) {
+        bridges[i].forEach(y => {
+            ctx.beginPath();
+            ctx.moveTo(lineX[i], y);
+            ctx.lineTo(lineX[i+1], y);
+            ctx.stroke();
+        });
+    }
+
+    // Pick a loser (The Payer)
+    const results = Array(numPlayers).fill("Free");
+    const payerIndex = Math.floor(Math.random() * numPlayers);
+    results[payerIndex] = "PAY 💸";
+
+    // Draw bottom labels
+    ctx.font = "bold 18px Arial";
+    for (let i = 0; i < numPlayers; i++) {
+        const text = results[i];
+        ctx.fillStyle = text.includes("PAY") ? "red" : "green";
+        ctx.fillText(text, lineX[i], height - 20);
+    }
+
+    // Animation: Trace the path from the LOSING spot (bottom) UP to the player
+    setTimeout(() => {
+        let currentIdx = payerIndex;
+        // Merge all bridges with their column index for sorting
+        let allBridges = [];
+        for(let c=0; c < numPlayers-1; c++) {
+            bridges[c].forEach(y => allBridges.push({y, col: c}));
+        }
+        // Sort by Y descending (bottom to top) to trace backwards
+        allBridges.sort((a, b) => b.y - a.y);
+
+        // Trace up
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(lineX[currentIdx], height - 50);
+
+        allBridges.forEach(bridge => {
+            // bridge connects col and col+1
+            if (bridge.col === currentIdx) {
+                // Bridge to the right (so we came from right, go right)
+                ctx.lineTo(lineX[currentIdx], bridge.y); // Go up to bridge
+                ctx.lineTo(lineX[currentIdx + 1], bridge.y); // Cross right
+                currentIdx++;
+            } else if (bridge.col === currentIdx - 1) {
+                // Bridge to the left (so we came from left, go left)
+                ctx.lineTo(lineX[currentIdx], bridge.y); // Go up to bridge
+                ctx.lineTo(lineX[currentIdx - 1], bridge.y); // Cross left
+                currentIdx--;
+            }
+        });
+
+        ctx.lineTo(lineX[currentIdx], 50); // Go to top
+        ctx.stroke();
+
+        const loserName = players[currentIdx];
+        ladderResult.textContent = `😭 ${loserName} pays for the meal! 💸`;
+        
+        // Highlight the loser's name at top
+        ctx.fillStyle = "red";
+        ctx.font = "bold 20px Arial";
+        ctx.fillText("▼", lineX[currentIdx], 15);
+
+    }, 500);
+}
+
 let currentMeal = 'dinner';
 const generateButton = document.getElementById('generate-button');
 const resultContainer = document.getElementById('result-container');

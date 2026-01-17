@@ -578,6 +578,43 @@ body.dark-mode .blog-post {
     margin-bottom: 10px;
 }
 
+/* Who Pay (Ladder Game) Section */
+.ladder-setup {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ladder-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+#ladder-container {
+    margin-top: 2rem;
+    position: relative;
+    overflow-x: auto; /* Allow scrolling if too wide */
+}
+
+#ladder-canvas {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+body.dark-mode #ladder-canvas {
+    background-color: #eee; /* Keep canvas light for visibility or adjust drawing colors */
+}
+
 /* AI Test Section */
 .ai-test-section {
     margin-top: 2.5rem;

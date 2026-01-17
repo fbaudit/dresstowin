@@ -74,6 +74,7 @@
                 <a href="#at-home">At Home</a>
                 <a href="#ai-decision">Ai Decision</a>
                 <a href="#making">Making</a>
+                <a href="#who-pay">Who Pay</a>
                 <a href="#contact">Contact</a>
             </div>
         </nav>
@@ -159,6 +160,20 @@
 
             <div id="making-content" class="blog-post">
                 <!-- Blog content will be injected here -->
+            </div>
+        </section>
+
+        <section id="who-pay" class="content-section">
+            <hr>
+            <h3>💸 Who Pay: Ladder Game</h3>
+            <p>Who's paying for the meal? Let the ladder decide!</p>
+            <div class="ladder-setup">
+                <input type="text" id="ladder-players" placeholder="Enter names (e.g. Alice, Bob, Charlie)" class="ladder-input">
+                <button id="start-ladder-btn" class="action-btn">Start Game</button>
+            </div>
+            <div id="ladder-container" style="display:none;">
+                <canvas id="ladder-canvas"></canvas>
+                <div id="ladder-result" class="result-area" style="font-weight: bold; font-size: 1.2rem; color: var(--button-bg);"></div>
             </div>
         </section>
 
