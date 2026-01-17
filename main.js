@@ -1,3 +1,71 @@
+// Language Switching Logic
+let currentLang = localStorage.getItem('language') || 'en';
+const langSelector = document.getElementById('language-selector');
+
+function updateLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+    langSelector.value = lang;
+
+    // RTL for Arabic
+    if (lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.lang = 'ar';
+    } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.lang = lang;
+    }
+
+    // Update Text Content
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            // Handle HTML content for specific keys
+            if (key === 'about_desc1' || key === 'about_desc2') {
+                el.innerHTML = translations[lang][key];
+            } else {
+                el.textContent = translations[lang][key];
+            }
+        }
+    });
+
+    // Update Placeholders
+    const placeholders = {
+        'fridge-input': 'placeholder_fridge',
+        'ladder-players': 'placeholder_ladder_players',
+        'ladder-amount': 'placeholder_ladder_amount',
+        'partnership-form input[name="name"]': 'placeholder_name',
+        'partnership-form input[name="email"]': 'placeholder_email',
+        'partnership-form textarea': 'placeholder_message'
+    };
+
+    for (const [selector, key] of Object.entries(placeholders)) {
+        const el = document.querySelector(selector.includes('partnership-form') ? `#partnership-form ${selector.split(' ')[1]}` : '#' + selector);
+        if (el && translations[lang][key]) {
+            el.placeholder = translations[lang][key];
+        }
+    }
+    
+    // Refresh Dynamic Content if needed
+    // (Ideally, we should re-render current views, but for simplicity we rely on next interaction)
+    
+    // Update active tab text in Making section immediately if active
+    const activeMakingTab = document.querySelector('.making-tab-btn.active');
+    if(activeMakingTab) {
+        renderRecipe(activeMakingTab.dataset.cuisine);
+    }
+}
+
+// Initial Load
+document.addEventListener('DOMContentLoaded', () => {
+    updateLanguage(currentLang);
+});
+
+langSelector.addEventListener('change', (e) => {
+    updateLanguage(e.target.value);
+});
+
+
 // Theme Toggle Logic
 const themeToggleBtn = document.getElementById('theme-toggle');
 const body = document.body;
@@ -292,108 +360,67 @@ function runLocalSearch(input) {
 // --- Making: Recipe Blog Logic ---
 const blogRecipes = {
     korean: {
-        title: "Kimchi Fried Rice (Kimchi Bokkeumbap)",
         image: "https://loremflickr.com/600/400/kimchi,rice",
-        intro: "A staple of Korean home cooking, Kimchi Fried Rice is the perfect way to use up aging kimchi. It's spicy, savory, and incredibly satisfying.",
-        ingredients: [
-            "1 cup Kimchi, chopped",
-            "2 cups cooked rice (day-old is best)",
-            "100g Pork belly or Spam, diced",
-            "1 tbsp Gochujang (Korean chili paste)",
-            "1 tbsp Sesame oil",
-            "1 Fried egg (for topping)",
-            "Seaweed flakes (optional)"
-        ],
-        steps: [
-            "Heat a pan over medium-high heat and stir-fry the diced pork/Spam until browned.",
-            "Add the chopped kimchi and stir-fry for 3-4 minutes until softened.",
-            "Mix in the Gochujang and cook for another minute.",
-            "Add the rice and break up any clumps, mixing thoroughly with the kimchi base.",
-            "Drizzle with sesame oil and remove from heat.",
-            "Serve topped with a sunny-side-up fried egg and seaweed flakes."
-        ]
+        title: {
+            en: "Kimchi Fried Rice (Kimchi Bokkeumbap)",
+            ko: "김치볶음밥",
+            ja: "キムチチャーハン",
+            zh: "泡菜炒饭",
+            es: "Arroz Frito con Kimchi",
+            ar: "أرز مقلي بالكيمتشي"
+        },
+        intro: {
+            en: "A staple of Korean home cooking, Kimchi Fried Rice is the perfect way to use up aging kimchi. It's spicy, savory, and incredibly satisfying.",
+            ko: "한국 가정식의 기본, 김치볶음밥은 신김치를 활용하는 최고의 방법입니다. 매콤하고 감칠맛이 넘칩니다.",
+            ja: "韓国の家庭料理の定番、キムチチャーハンは、古漬けキムチを使うのに最適です。",
+            zh: "作为韩国家常菜的主食，泡菜炒饭是利用陈年泡菜的最佳方式。",
+            es: "Un elemento básico de la cocina casera coreana.",
+            ar: "عنصر أساسي في الطبخ المنزلي الكوري."
+        },
+        ingredients: {
+            en: ["1 cup Kimchi", "2 cups rice", "100g Pork/Spam", "1 tbsp Gochujang", "1 tbsp Sesame oil", "Fried egg"],
+            ko: ["김치 1컵", "밥 2공기", "돼지고기/스팸 100g", "고추장 1큰술", "참기름 1큰술", "계란후라이"],
+            ja: ["キムチ 1カップ", "ご飯 2杯", "豚肉/スパム 100g", "コチュジャン 大さじ1", "ごま油 大さじ1", "目玉焼き"],
+            zh: ["1杯泡菜", "2碗米饭", "100克猪肉/午餐肉", "1勺韩式辣酱", "1勺香油", "煎蛋"],
+            es: ["1 taza Kimchi", "2 tazas arroz", "100g Cerdo/Spam", "1 cda Gochujang", "1 cda Aceite sésamo", "Huevo frito"],
+            ar: ["1 كوب كيمتشي", "2 كوب أرز", "100غ لحم/سبام", "1 م.ك غوتشوجانغ", "1 م.ك زيت سمسم", "بيض مقلي"]
+        },
+        steps: {
+            en: ["Stir-fry pork.", "Add kimchi.", "Mix in Gochujang.", "Add rice and mix.", "Add sesame oil.", "Top with egg."],
+            ko: ["돼지고기를 볶습니다.", "김치를 넣고 볶습니다.", "고추장을 넣습니다.", "밥을 넣고 잘 섞습니다.", "참기름을 두릅니다.", "계란후라이를 올립니다."],
+            ja: ["豚肉を炒める。", "キムチを加える。", "コチュジャンを混ぜる。", "ご飯を加えて混ぜる。", "ごま油をかける。", "目玉焼きを乗せる。"],
+            zh: ["炒猪肉。", "加入泡菜。", "加入辣酱。", "加入米饭拌匀。", "淋上香油。", "放上煎蛋。"],
+            es: ["Sofreír cerdo.", "Añadir kimchi.", "Mezclar Gochujang.", "Añadir arroz.", "Añadir aceite.", "Poner huevo."],
+            ar: ["قلي اللحم.", "أضف الكيمتشي.", "اخلط الغوتشوجانغ.", "أضف الأرز واخلط.", "أضف زيت السمسم.", "ضع البيض."]
+        }
     },
     japanese: {
-        title: "Chicken Teriyaki",
         image: "https://loremflickr.com/600/400/teriyaki,chicken",
-        intro: "Chicken Teriyaki features tender chicken glazed in a sweet and savory sauce. It's a classic Japanese dish that's loved worldwide.",
-        ingredients: [
-            "2 Chicken thighs, boneless and skin-on",
-            "2 tbsp Soy sauce",
-            "2 tbsp Mirin",
-            "2 tbsp Sake (or water)",
-            "1 tbsp Sugar",
-            "Spring onions for garnish"
-        ],
-        steps: [
-            "Prick the chicken skin with a fork and season lightly with salt.",
-            "Pan-fry the chicken skin-side down until crispy and golden brown. Flip and cook for 2 more minutes.",
-            "Mix soy sauce, mirin, sake, and sugar in a small bowl.",
-            "Wipe excess oil from the pan and pour in the sauce.",
-            "Simmer until the sauce thickens and glazes the chicken beautifully.",
-            "Slice the chicken, serve over rice, and garnish with spring onions."
-        ]
+        title: { en: "Chicken Teriyaki", ko: "치킨 데리야끼", ja: "照り焼きチキン", zh: "照烧鸡", es: "Pollo Teriyaki", ar: "دجاج ترياكي" },
+        intro: { en: "Tender chicken glazed in a sweet and savory sauce.", ko: "달콤 짭짤한 소스로 맛을 낸 부드러운 치킨입니다.", ja: "甘辛いタレが絡んだ柔らかいチキンです。", zh: "甜咸酱汁裹着的嫩滑鸡肉。", es: "Pollo tierno glaseado.", ar: "دجاج طري بصلصة حلوة ومالحة." },
+        ingredients: { en: ["Chicken thighs", "Soy sauce", "Mirin", "Sugar"], ko: ["닭다리살", "간장", "미림", "설탕"], ja: ["鶏もも肉", "醤油", "みりん", "砂糖"], zh: ["鸡腿肉", "酱油", "味淋", "糖"], es: ["Muslos pollo", "Salsa soja", "Mirin", "Azúcar"], ar: ["افخاذ دجاج", "صويا صوص", "ميرين", "سكر"] },
+        steps: { en: ["Pan-fry chicken.", "Add sauce ingredients.", "Simmer until glazed."], ko: ["닭고기를 굽습니다.", "소스 재료를 넣습니다.", "졸입니다."], ja: ["鶏肉を焼く。", "タレを加える。", "煮詰める。"], zh: ["煎鸡肉。", "加入酱汁。", "炖煮收汁。"], es: ["Freír pollo.", "Añadir salsa.", "Cocinar."], ar: ["قلي الدجاج.", "أضف الصلصة.", "اطهي حتى تتسبك."] }
     },
     chinese: {
-        title: "Tomato and Egg Stir-fry",
         image: "https://loremflickr.com/600/400/tomato,egg",
-        intro: "A humble yet delicious Chinese comfort food. The sweetness of the tomatoes balances perfectly with the savory fluffy eggs.",
-        ingredients: [
-            "3 Eggs, beaten",
-            "2 large Tomatoes, cut into wedges",
-            "1 Scallion, chopped",
-            "1 tsp Sugar",
-            "Salt and vegetable oil",
-            "1 tsp Sesame oil (optional)"
-        ],
-        steps: [
-            "Scramble the eggs in a hot wok with oil until just set, then remove and set aside.",
-            "Add a bit more oil and stir-fry the tomatoes until they release their juices.",
-            "Add sugar and salt, smashing the tomatoes slightly to create a sauce.",
-            "Return the eggs to the wok and mix gently to combine.",
-            "Garnish with scallions and a drizzle of sesame oil. Serve with steamed rice."
-        ]
+        title: { en: "Tomato and Egg Stir-fry", ko: "토마토 달걀 볶음", ja: "トマトと卵の炒め物", zh: "西红柿炒鸡蛋", es: "Tomate con Huevo", ar: "بيض بالطماطم" },
+        intro: { en: "Comfort food with sweet tomatoes and fluffy eggs.", ko: "달콤한 토마토와 부드러운 계란의 조화.", ja: "トマトと卵の優しい味。", zh: "经典的家常菜。", es: "Comida reconfortante.", ar: "طعام مريح مع طماطم وبيض." },
+        ingredients: { en: ["Eggs", "Tomatoes", "Scallion", "Salt"], ko: ["계란", "토마토", "대파", "소금"], ja: ["卵", "トマト", "ネギ", "塩"], zh: ["鸡蛋", "西红柿", "葱", "盐"], es: ["Huevos", "Tomates", "Cebollín", "Sal"], ar: ["بيض", "طماطم", "بصل أخضر", "ملح"] },
+        steps: { en: ["Scramble eggs.", "Stir-fry tomatoes.", "Mix together."], ko: ["계란을 스크램블합니다.", "토마토를 볶습니다.", "섞습니다."], ja: ["卵を炒める。", "トマトを炒める。", "混ぜる。"], zh: ["炒鸡蛋。", "炒西红柿。", "混合。"], es: ["Revolver huevos.", "Sofreír tomates.", "Mezclar."], ar: ["اخفق البيض.", "قلي الطماطم.", "اخلط."] }
     },
     dessert: {
-        title: "Classic Chocolate Brownies",
         image: "https://loremflickr.com/600/400/brownie",
-        intro: "Fudgy, chewy, and chocolaty. These brownies are the ultimate treat for any chocolate lover.",
-        ingredients: [
-            "1/2 cup Unsalted butter, melted",
-            "1 cup Sugar",
-            "2 Eggs",
-            "1 tsp Vanilla extract",
-            "1/3 cup Cocoa powder",
-            "1/2 cup All-purpose flour",
-            "1/4 tsp Salt",
-            "1/4 tsp Baking powder"
-        ],
-        steps: [
-            "Preheat oven to 350°F (175°C) and grease a baking pan.",
-            "In a large bowl, mix melted butter and sugar. Beat in eggs and vanilla.",
-            "Sift in cocoa powder, flour, salt, and baking powder. Fold gently until just combined.",
-            "Pour batter into the pan and spread evenly.",
-            "Bake for 20-25 minutes. Let cool completely before slicing."
-        ]
+        title: { en: "Chocolate Brownies", ko: "초콜릿 브라우니", ja: "チョコブラウニー", zh: "巧克力布朗尼", es: "Brownies de Chocolate", ar: "براوني الشوكولاتة" },
+        intro: { en: "Fudgy, chewy, and chocolaty.", ko: "꾸덕하고 달콤한 초콜릿 맛.", ja: "濃厚でチューイー。", zh: "浓郁的巧克力味。", es: "Masticable y chocolatoso.", ar: "غني بالشوكولاتة." },
+        ingredients: { en: ["Butter", "Sugar", "Eggs", "Cocoa powder", "Flour"], ko: ["버터", "설탕", "계란", "코코아 파우더", "밀가루"], ja: ["バター", "砂糖", "卵", "ココア", "小麦粉"], zh: ["黄油", "糖", "鸡蛋", "可可粉", "面粉"], es: ["Mantequilla", "Azúcar", "Huevos", "Cacao", "Harina"], ar: ["زبدة", "سكر", "بيض", "كاكاو", "طحين"] },
+        steps: { en: ["Mix wet ingredients.", "Add dry ingredients.", "Bake."], ko: ["액체 재료를 섞습니다.", "가루 재료를 넣습니다.", "굽습니다."], ja: ["液体材料を混ぜる。", "粉類を加える。", "焼く。"], zh: ["混合湿料。", "加入干料。", "烘烤。"], es: ["Mezclar húmedos.", "Añadir secos.", "Hornear."], ar: ["اخلط السوائل.", "أضف الجاف.", "اخبز."] }
     },
     latenight: {
-        title: "Spicy Ramen Hack (Kujirai Ramen)",
         image: "https://loremflickr.com/600/400/ramen,egg",
-        intro: "A viral way to eat instant ramen—less soup, more flavor, and a creamy egg to top it off. Perfect for late-night cravings.",
-        ingredients: [
-            "1 pack Spicy instant ramen (e.g., Shin Ramyun)",
-            "1 Egg",
-            "1 slice American cheese",
-            "Green onions",
-            "350ml Water (about half the usual amount)"
-        ],
-        steps: [
-            "Boil water in a shallow pan and add the noodles and vegetable flakes.",
-            "Once noodles start to soften, add only HALF the soup powder seasoning.",
-            "Crack an egg into the center of the noodles and place cheese on top.",
-            "Cover with a lid and simmer on low heat for 2 minutes until the egg white is set.",
-            "Garnish with green onions and enjoy the rich, creamy noodles."
-        ]
+        title: { en: "Kujirai Ramen", ko: "쿠지라이식 라면", ja: "クジライ式ラーメン", zh: "久吉莱拉面", es: "Ramen Kujirai", ar: "رامين كوجيراي" },
+        intro: { en: "Less soup, more flavor, creamy egg.", ko: "국물 없이 진한 맛과 부드러운 계란.", ja: "スープ少なめ、濃厚な味。", zh: "汤少味浓。", es: "Menos sopa, más sabor.", ar: "حساء أقل، نكهة أكثر." },
+        ingredients: { en: ["Ramen", "Egg", "Cheese", "Green onion"], ko: ["라면", "계란", "치즈", "대파"], ja: ["ラーメン", "卵", "チーズ", "ネギ"], zh: ["拉面", "鸡蛋", "芝士", "葱"], es: ["Ramen", "Huevo", "Queso", "Cebollín"], ar: ["رامين", "بيض", "جبن", "بصل أخضر"] },
+        steps: { en: ["Boil noodles with less water.", "Add half seasoning.", "Add egg and cheese.", "Simmer."], ko: ["물 적게 넣고 면 끓이기.", "스프 반만 넣기.", "계란, 치즈 넣기.", "졸이기."], ja: ["少ない水で麺を茹でる。", "スープ半分。", "卵とチーズ。", "煮込む。"], zh: ["少水煮面。", "加半包料。", "加蛋和芝士。", "焖煮。"], es: ["Hervir fideos poca agua.", "Mitad sazón.", "Añadir huevo queso.", "Cocinar."], ar: ["اغلي النودلز بماء قليل.", "نصف البهارات.", "أضف البيض والجبن.", "اطهي."] }
     }
 };
 
@@ -405,19 +432,22 @@ function renderRecipe(cuisine) {
     // Add timestamp to image to avoid caching issues with loremflickr
     const imgUrl = `${recipe.image}?random=${Date.now()}`;
     
+    // Get text based on current language, fallback to 'en'
+    const getTxt = (obj) => obj[currentLang] || obj['en'];
+
     makingContent.innerHTML = `
-        <img src="${imgUrl}" alt="${recipe.title}" class="blog-header-img" loading="lazy">
-        <h2 class="blog-title">${recipe.title}</h2>
-        <p class="blog-intro">${recipe.intro}</p>
+        <img src="${imgUrl}" alt="${getTxt(recipe.title)}" class="blog-header-img" loading="lazy">
+        <h2 class="blog-title">${getTxt(recipe.title)}</h2>
+        <p class="blog-intro">${getTxt(recipe.intro)}</p>
         
-        <div class="recipe-section-title">🛒 Ingredients</div>
+        <div class="recipe-section-title">${(translations[currentLang] && translations[currentLang].ingredients_label) || 'Ingredients'}</div>
         <ul class="ingredient-list">
-            ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+            ${getTxt(recipe.ingredients).map(ing => `<li>${ing}</li>`).join('')}
         </ul>
         
-        <div class="recipe-section-title">🍳 Instructions</div>
+        <div class="recipe-section-title">${(translations[currentLang] && translations[currentLang].instructions_label) || 'Instructions'}</div>
         <ol class="step-list">
-            ${recipe.steps.map(step => `<li>${step}</li>`).join('')}
+            ${getTxt(recipe.steps).map(step => `<li>${step}</li>`).join('')}
         </ol>
     `;
 }
@@ -432,6 +462,8 @@ makingTabs.forEach(btn => {
 });
 
 // Initial Render for Making Section
+// Wait for DOM load to ensure translations are loaded if needed, but since this is script execution:
+// We rely on currentLang being set.
 renderRecipe('korean');
 
 

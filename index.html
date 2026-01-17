@@ -70,55 +70,48 @@
         <nav class="navbar">
             <a href="index.html" class="nav-logo">Family Dining</a>
             <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#at-home">At Home</a>
-                <a href="#ai-decision">Ai Decision</a>
-                <a href="#making">Making</a>
-                <a href="#who-pay">Who Pay</a>
-                <a href="#contact">Contact</a>
+                <a href="#about" data-i18n="nav_about">About</a>
+                <a href="#at-home" data-i18n="nav_athome">At Home</a>
+                <a href="#ai-decision" data-i18n="nav_aidecision">Ai Decision</a>
+                <a href="#making" data-i18n="nav_making">Making</a>
+                <a href="#who-pay" data-i18n="nav_whopay">Who Pay</a>
+                <a href="#contact" data-i18n="nav_contact">Contact</a>
             </div>
+            <select id="language-selector" style="margin-left: 10px; padding: 5px; border-radius: 5px;">
+                <option value="en">English</option>
+                <option value="ko">한국어</option>
+                <option value="ja">日本語</option>
+                <option value="zh">中文</option>
+                <option value="es">Español</option>
+                <option value="ar">العربية</option>
+            </select>
         </nav>
 
-        <button id="theme-toggle" style="position: relative; top: auto; right: auto; margin-bottom: 1rem;">🌙 Dark Mode</button>
+        <button id="theme-toggle" style="position: relative; top: auto; right: auto; margin-bottom: 1rem;" data-i18n="dark_mode">🌙 Dark Mode</button>
         
         <section id="about" class="content-section text-content">
-            <h2>Why Use Family Dining Recommender?</h2>
-            <p>Choosing a meal that satisfies everyone in a family of four can be a challenging task, especially on weekends. Our <strong>Family Dining Recommender</strong> is designed to alleviate this stress by providing random, popular, and family-friendly dining options.</p>
-            <p>Whether you are craving savory <em>Korean BBQ</em>, fresh <em>Sushi</em>, or a hearty <em>Stew</em>, our algorithm picks from a curated list of top-rated food categories loved by families. Stop arguing over "What's for dinner?" and let fate decide your next culinary adventure.</p>
+            <h2 data-i18n="about_title">Why Use Family Dining Recommender?</h2>
+            <p data-i18n="about_desc1">Choosing a meal that satisfies everyone in a family of four can be a challenging task, especially on weekends. Our <strong>Family Dining Recommender</strong> is designed to alleviate this stress by providing random, popular, and family-friendly dining options.</p>
+            <p data-i18n="about_desc2">Whether you are craving savory <em>Korean BBQ</em>, fresh <em>Sushi</em>, or a hearty <em>Stew</em>, our algorithm picks from a curated list of top-rated food categories loved by families. Stop arguing over "What's for dinner?" and let fate decide your next culinary adventure.</p>
         </section>
 
         <header>
-            <h1>Family Dining Menu 🍽️</h1>
-            <p class="subtitle">Solve your daily menu dilemma instantly!</p>
+            <h1 data-i18n="header_title">Family Dining Menu 🍽️</h1>
+            <p class="subtitle" data-i18n="header_subtitle">Solve your daily menu dilemma instantly!</p>
         </header>
 
         <section class="content-section">
             <div class="tabs">
-                <button class="tab-btn" data-meal="breakfast">Breakfast</button>
-                <button class="tab-btn" data-meal="lunch">Lunch</button>
-                <button class="tab-btn active" data-meal="dinner">Dinner</button>
-                <button class="tab-btn" data-meal="dessert">Dessert</button>
-                <button class="tab-btn" data-meal="latenight">Late Night</button>
+                <button class="tab-btn" data-meal="breakfast" data-i18n="tab_breakfast">Breakfast</button>
+                <button class="tab-btn" data-meal="lunch" data-i18n="tab_lunch">Lunch</button>
+                <button class="tab-btn active" data-meal="dinner" data-i18n="tab_dinner">Dinner</button>
+                <button class="tab-btn" data-meal="dessert" data-i18n="tab_dessert">Dessert</button>
+                <button class="tab-btn" data-meal="latenight" data-i18n="tab_latenight">Late Night</button>
             </div>
             <div id="result-container" class="result-area">
-                <p class="placeholder-text">Click the button below to get a delicious recommendation!</p>
+                <p class="placeholder-text" data-i18n="placeholder_result">Click the button below to get a delicious recommendation!</p>
             </div>
-            <button id="generate-button">Recommend Menu</button>
-        </section>
-
-        <section id="at-home" class="content-section">
-            <hr>
-            <h3>
-                🏠 At Home: Fridge Chef
-                <button id="settings-btn" title="AI Settings" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">⚙️</button>
-            </h3>
-            <p>Tell us what's in your fridge, and our AI will suggest what to cook!</p>
-            <div class="fridge-container">
-                <textarea id="fridge-input" placeholder="Enter ingredients separated by commas (e.g., eggs, kimchi, onion, pork)..."></textarea>
-                <p style="font-size: 0.8rem; color: #888; margin-top: -5px; margin-bottom: 10px;">Example: 계란, 밥, 파, kimchi, pork, onion</p>
-                <button id="fridge-btn" class="action-btn">Find Recipes with AI</button>
-            </div>
-            <div id="fridge-result" class="result-area" style="display: none; flex-direction: column; gap: 20px;"></div>
+            <button id="generate-button" data-i18n="btn_recommend">Recommend Menu</button>
         </section>
 
         <!-- API Key Settings Modal -->
@@ -136,27 +129,42 @@
             </div>
         </div>
 
+        <section id="at-home" class="content-section">
+            <hr>
+            <h3>
+                <span data-i18n="athome_title">🏠 At Home: Fridge Chef</span>
+                <button id="settings-btn" title="AI Settings" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">⚙️</button>
+            </h3>
+            <p data-i18n="athome_desc">Tell us what's in your fridge, and our AI will suggest what to cook!</p>
+            <div class="fridge-container">
+                <textarea id="fridge-input" placeholder="Enter ingredients separated by commas (e.g., eggs, kimchi, onion, pork)..."></textarea>
+                <p style="font-size: 0.8rem; color: #888; margin-top: -5px; margin-bottom: 10px;" data-i18n="example_fridge">Example: 계란, 밥, 파, kimchi, pork, onion</p>
+                <button id="fridge-btn" class="action-btn" data-i18n="btn_find_recipes">Find Recipes with AI</button>
+            </div>
+            <div id="fridge-result" class="result-area" style="display: none; flex-direction: column; gap: 20px;"></div>
+        </section>
+
         <section id="ai-decision" class="ai-test-section content-section">
             <hr>
-            <h3>👨 Man Like vs Woman Like Ai Decision 👩</h3>
-            <p>Wondering if your meal choice is traditionally more popular among men or women? Show your food to the camera! This feature uses Google's Teachable Machine technology to analyze food patterns and predict gender preferences. Images are processed locally in your browser and are never sent to a server, ensuring your privacy.</p>
-            <p style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold;">Show your food to the camera!</p>
-            <button type="button" id="start-ai-test-btn" class="action-btn">Start Camera</button>
+            <h3 data-i18n="aidecision_title">👨 Man Like vs Woman Like Ai Decision 👩</h3>
+            <p data-i18n="aidecision_desc1">Wondering if your meal choice is traditionally more popular among men or women? Show your food to the camera! This feature uses Google's Teachable Machine technology to analyze food patterns and predict gender preferences. Images are processed locally in your browser and are never sent to a server, ensuring your privacy.</p>
+            <p style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold;" data-i18n="aidecision_desc2">Show your food to the camera!</p>
+            <button type="button" id="start-ai-test-btn" class="action-btn" data-i18n="btn_start_camera">Start Camera</button>
             <div id="webcam-container"></div>
             <div id="label-container"></div>
         </section>
 
         <section id="making" class="content-section">
             <hr>
-            <h3>📖 Making: Recipe Blog</h3>
-            <p>Learn how to cook popular dishes from different cuisines!</p>
+            <h3 data-i18n="making_title">📖 Making: Recipe Blog</h3>
+            <p data-i18n="making_desc">Learn how to cook popular dishes from different cuisines!</p>
             
             <div class="tabs making-tabs" style="margin-bottom: 2rem;">
-                <button class="tab-btn making-tab-btn active" data-cuisine="korean">Korean</button>
-                <button class="tab-btn making-tab-btn" data-cuisine="japanese">Japanese</button>
-                <button class="tab-btn making-tab-btn" data-cuisine="chinese">Chinese</button>
-                <button class="tab-btn making-tab-btn" data-cuisine="dessert">Dessert</button>
-                <button class="tab-btn making-tab-btn" data-cuisine="latenight">Late Night</button>
+                <button class="tab-btn making-tab-btn active" data-cuisine="korean" data-i18n="tab_korean">Korean</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="japanese" data-i18n="tab_japanese">Japanese</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="chinese" data-i18n="tab_chinese">Chinese</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="dessert" data-i18n="tab_dessert">Dessert</button>
+                <button class="tab-btn making-tab-btn" data-cuisine="latenight" data-i18n="tab_latenight">Late Night</button>
             </div>
 
             <div id="making-content" class="blog-post">
@@ -166,13 +174,13 @@
 
         <section id="who-pay" class="content-section">
             <hr>
-            <h3>💸 Who Pay: Ladder Game</h3>
-            <p>Who's paying for the meal? Let the ladder decide!</p>
+            <h3 data-i18n="whopay_title">💸 Who Pay: Ladder Game</h3>
+            <p data-i18n="whopay_desc">Who's paying for the meal? Let the ladder decide!</p>
             <div class="ladder-setup">
                 <input type="text" id="ladder-players" placeholder="Enter names (e.g. Alice, Bob, Charlie)" class="ladder-input">
                 <input type="number" id="ladder-amount" placeholder="Total Amount (Optional, e.g. 50000)" class="ladder-input" style="margin-top: 5px;">
-                <p style="font-size: 0.8rem; color: #888; margin-top: 5px; margin-bottom: 10px;">Example: 철수, 영희, 민수 (Leave Amount empty for 'Loser Takes All')</p>
-                <button id="start-ladder-btn" class="action-btn">Start Game</button>
+                <p style="font-size: 0.8rem; color: #888; margin-top: 5px; margin-bottom: 10px;" data-i18n="example_ladder">Example: 철수, 영희, 민수 (Leave Amount empty for 'Loser Takes All')</p>
+                <button id="start-ladder-btn" class="action-btn" data-i18n="btn_start_game">Start Game</button>
             </div>
             <div id="ladder-container" style="display:none;">
                 <canvas id="ladder-canvas"></canvas>
@@ -182,8 +190,8 @@
 
         <section id="contact" class="partnership-section content-section">
             <hr>
-            <h3>Partnership Inquiry</h3>
-            <p>Are you a restaurant owner looking to be featured? Contact us!</p>
+            <h3 data-i18n="contact_title">Partnership Inquiry</h3>
+            <p data-i18n="contact_desc">Are you a restaurant owner looking to be featured? Contact us!</p>
             <form action="https://formspree.io/f/maqqwpje" method="POST" id="partnership-form">
                 <div class="form-group">
                     <input type="text" name="name" placeholder="Name / Company" required>
@@ -194,15 +202,15 @@
                 <div class="form-group">
                     <textarea name="message" placeholder="How can we partner together?" required></textarea>
                 </div>
-                <button type="submit" id="submit-button">Send Inquiry</button>
+                <button type="submit" id="submit-button" data-i18n="btn_send">Send Inquiry</button>
             </form>
         </section>
 
         <div id="disqus_thread" style="margin-top: 2.5rem;"></div>
         
         <footer>
-            <p>&copy; 2026 Family Dining Recommender. All rights reserved.</p>
-            <a href="privacy.html">Privacy Policy</a>
+            <p data-i18n="footer_rights">&copy; 2026 Family Dining Recommender. All rights reserved.</p>
+            <a href="privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
         </footer>
         <script>
             /**
@@ -223,6 +231,7 @@
         </script>
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
+    <script src="translations.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
