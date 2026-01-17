@@ -443,6 +443,8 @@ const ctx = ladderCanvas.getContext('2d');
 
 startLadderBtn.addEventListener('click', () => {
     const input = document.getElementById('ladder-players').value;
+    const amountInput = document.getElementById('ladder-amount').value;
+    
     if (!input.trim()) {
         alert("Please enter player names!");
         return;
@@ -453,15 +455,17 @@ startLadderBtn.addEventListener('click', () => {
         alert("Need at least 2 players!");
         return;
     }
+    
+    const totalAmount = amountInput ? parseInt(amountInput) : 0;
 
     document.getElementById('ladder-container').style.display = 'block';
-    playLadderGame(players);
+    playLadderGame(players, totalAmount);
 });
 
-function playLadderGame(players) {
+function playLadderGame(players, totalAmount) {
     const numPlayers = players.length;
     // Canvas Setup
-    const width = Math.min(window.innerWidth - 40, numPlayers * 100); // Responsive width
+    const width = Math.min(window.innerWidth - 40, numPlayers * 100); 
     const height = 400;
     const padding = 50;
     const colWidth = (width - padding * 2) / (numPlayers - 1);
@@ -493,15 +497,11 @@ function playLadderGame(players) {
         ctx.moveTo(x, 50);
         ctx.lineTo(x, height - 50);
         ctx.stroke();
-        
-        // Result placeholder at bottom
-        ctx.fillText("?", x, height - 20);
     }
 
     // Generate Random Horizontal Lines (Bridges)
-    // Structure: bridges[colIndex] = [y1, y2, ...]
     const bridges = Array.from({ length: numPlayers - 1 }, () => []);
-    const numBridgesPerCol = 4; // Approx bridges per gap
+    const numBridgesPerCol = 4 + Math.floor(Math.random() * 3); // 4~6 bridges
 
     for (let i = 0; i < numPlayers - 1; i++) {
         for (let j = 0; j < numBridgesPerCol; j++) {
@@ -509,7 +509,7 @@ function playLadderGame(players) {
             const y = 60 + Math.random() * (height - 120);
             bridges[i].push(y);
         }
-        bridges[i].sort((a, b) => a - b); // Sort by height
+        bridges[i].sort((a, b) => a - b);
     }
 
     // Draw Bridges
@@ -524,22 +524,80 @@ function playLadderGame(players) {
         });
     }
 
-    // Pick a loser (The Payer)
-    const results = Array(numPlayers).fill("Free");
-    const payerIndex = Math.floor(Math.random() * numPlayers);
-    results[payerIndex] = "PAY 💸";
+    // Determine Results (Amounts)
+    let results = [];
+    let maxPayerIndex = 0; // Index of the person paying the most (for highlighting)
+
+    if (totalAmount > 0) {
+        // Random Distribution
+        // 1. Generate N-1 random cut points in range 0 to totalAmount
+        let cuts = [];
+        for(let k=0; k < numPlayers - 1; k++) {
+            cuts.push(Math.random() * totalAmount);
+        }
+        cuts.push(0);
+        cuts.push(totalAmount);
+        cuts.sort((a, b) => a - b);
+
+        let amounts = [];
+        for(let k=0; k < numPlayers; k++) {
+            let share = cuts[k+1] - cuts[k];
+            // Round to nearest 100 for cleaner numbers
+            share = Math.round(share / 100) * 100;
+            amounts.push(share);
+        }
+
+        // Adjust sum mismatch due to rounding
+        let currentSum = amounts.reduce((a,b) => a+b, 0);
+        let diff = totalAmount - currentSum;
+        // Add diff to the largest amount to avoid negative numbers on small shares
+        let maxVal = -1;
+        let maxIdx = -1;
+        amounts.forEach((val, idx) => {
+             if(val > maxVal) { maxVal = val; maxIdx = idx; }
+        });
+        amounts[maxIdx] += diff;
+
+        // Shuffle amounts to randomize positions on ladder bottom
+        // (Actually, the ladder path is random, so we can just assign these amounts to bottom slots)
+        // Let's just shuffle them to be sure.
+        for (let i = amounts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [amounts[i], amounts[j]] = [amounts[j], amounts[i]];
+        }
+        
+        results = amounts.map(a => a.toLocaleString() + ""); // Add currency symbol later or assume implied
+        
+        // Find who pays the MOST
+        let maxAmount = -1;
+        amounts.forEach((amt, idx) => {
+            if(amt > maxAmount) {
+                maxAmount = amt;
+                maxPayerIndex = idx;
+            }
+        });
+        
+    } else {
+        // Loser Takes All Mode
+        results = Array(numPlayers).fill("Free");
+        const loserIndex = Math.floor(Math.random() * numPlayers);
+        results[loserIndex] = "PAY 💸";
+        maxPayerIndex = loserIndex;
+    }
 
     // Draw bottom labels
-    ctx.font = "bold 18px Arial";
+    ctx.font = "bold 14px Arial";
     for (let i = 0; i < numPlayers; i++) {
         const text = results[i];
-        ctx.fillStyle = text.includes("PAY") ? "red" : "green";
+        // Red for Payer/High amount, Green for Free/Low
+        ctx.fillStyle = (i === maxPayerIndex) ? "red" : (text === "Free" || text === "0" ? "green" : "#333");
         ctx.fillText(text, lineX[i], height - 20);
     }
 
-    // Animation: Trace the path from the LOSING spot (bottom) UP to the player
+    // Animation: Trace the path from the MAX PAYER spot (bottom) UP to the player
     setTimeout(() => {
-        let currentIdx = payerIndex;
+        let currentIdx = maxPayerIndex;
+        
         // Merge all bridges with their column index for sorting
         let allBridges = [];
         for(let c=0; c < numPlayers-1; c++) {
@@ -558,13 +616,13 @@ function playLadderGame(players) {
             // bridge connects col and col+1
             if (bridge.col === currentIdx) {
                 // Bridge to the right (so we came from right, go right)
-                ctx.lineTo(lineX[currentIdx], bridge.y); // Go up to bridge
-                ctx.lineTo(lineX[currentIdx + 1], bridge.y); // Cross right
+                ctx.lineTo(lineX[currentIdx], bridge.y); 
+                ctx.lineTo(lineX[currentIdx + 1], bridge.y); 
                 currentIdx++;
             } else if (bridge.col === currentIdx - 1) {
                 // Bridge to the left (so we came from left, go left)
-                ctx.lineTo(lineX[currentIdx], bridge.y); // Go up to bridge
-                ctx.lineTo(lineX[currentIdx - 1], bridge.y); // Cross left
+                ctx.lineTo(lineX[currentIdx], bridge.y); 
+                ctx.lineTo(lineX[currentIdx - 1], bridge.y); 
                 currentIdx--;
             }
         });
@@ -572,8 +630,14 @@ function playLadderGame(players) {
         ctx.lineTo(lineX[currentIdx], 50); // Go to top
         ctx.stroke();
 
-        const loserName = players[currentIdx];
-        ladderResult.textContent = `😭 ${loserName} pays for the meal! 💸`;
+        const payerName = players[currentIdx];
+        const payAmount = results[maxPayerIndex];
+        
+        if (totalAmount > 0) {
+             ladderResult.textContent = `😭 ${payerName} pays the most: ${payAmount}!`;
+        } else {
+             ladderResult.textContent = `😭 ${payerName} pays for everything! 💸`;
+        }
         
         // Highlight the loser's name at top
         ctx.fillStyle = "red";

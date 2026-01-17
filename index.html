@@ -170,7 +170,8 @@
             <p>Who's paying for the meal? Let the ladder decide!</p>
             <div class="ladder-setup">
                 <input type="text" id="ladder-players" placeholder="Enter names (e.g. Alice, Bob, Charlie)" class="ladder-input">
-                <p style="font-size: 0.8rem; color: #888; margin-top: -5px; margin-bottom: 10px;">Example: 철수, 영희, 민수, Alice, Bob</p>
+                <input type="number" id="ladder-amount" placeholder="Total Amount (Optional, e.g. 50000)" class="ladder-input" style="margin-top: 5px;">
+                <p style="font-size: 0.8rem; color: #888; margin-top: 5px; margin-bottom: 10px;">Example: 철수, 영희, 민수 (Leave Amount empty for 'Loser Takes All')</p>
                 <button id="start-ladder-btn" class="action-btn">Start Game</button>
             </div>
             <div id="ladder-container" style="display:none;">
