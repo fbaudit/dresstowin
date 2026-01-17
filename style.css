@@ -159,6 +159,54 @@ h1 {
     color: white;
 }
 
+/* Location Search Styles */
+.location-controls {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.radius-control {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.radius-control label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.radius-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--button-bg);
+}
+
+.find-nearby-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.find-nearby-btn:hover {
+    background-color: #388E3C;
+}
+
 body.dark-mode .nutrition-info span {
     background-color: rgba(255, 255, 255, 0.1);
     color: #ccc;

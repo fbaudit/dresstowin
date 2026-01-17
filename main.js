@@ -123,13 +123,74 @@ generateButton.addEventListener('click', () => {
                     <span>🔥 ${selectedFood.calories} kcal (Est.)</span>
                     <span>🧂 ${selectedFood.sodium} mg (Est.)</span>
                 </div>
-                <a href="https://www.google.com/search?q=${encodeURIComponent(selectedFood.name + ' nutrition facts calories sodium')}" target="_blank" class="search-link">
-                    🔍 Search Nutrition Info on Google
-                </a>
+                
+                <div class="location-controls">
+                    <div class="radius-control">
+                        <label for="radius-slider">Search Radius: <span id="radius-value">1</span> km</label>
+                        <input type="range" id="radius-slider" min="0.5" max="10" step="0.5" value="1">
+                    </div>
+                    <button onclick="findNearbyRestaurants('${selectedFood.name.replace(/'/g, "\\'")}')" class="find-nearby-btn">
+                        📍 Find Nearby Restaurants
+                    </button>
+                    <a href="https://www.google.com/search?q=${encodeURIComponent(selectedFood.name + ' nutrition facts calories sodium')}" target="_blank" class="search-link">
+                        🔍 Search Nutrition Info
+                    </a>
+                </div>
             </div>
         `;
+
+        // Re-attach slider event listener since HTML was overwritten
+        document.getElementById('radius-slider').addEventListener('input', function(e) {
+            document.getElementById('radius-value').textContent = e.target.value;
+        });
+
     }, 500); // 0.5s delay for effect
 });
+
+// Geolocation Logic for Nearby Restaurants
+function findNearbyRestaurants(foodName) {
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+    }
+
+    const btn = document.querySelector('.find-nearby-btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = "📍 Locating...";
+    btn.disabled = true;
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const radiusKm = document.getElementById('radius-slider').value;
+        
+        // Approximate Zoom Level mapping based on radius
+        // 0.5km -> 16z, 1km -> 15z, 5km -> 13z, 10km -> 12z
+        let zoom = 15;
+        if (radiusKm <= 0.5) zoom = 16;
+        else if (radiusKm <= 2) zoom = 15;
+        else if (radiusKm <= 5) zoom = 13;
+        else zoom = 12;
+
+        // Construct Google Maps URL
+        // query: food name + "near me" (Google Maps handles 'near me' well with coordinates)
+        // or just query: food name and set center/zoom
+        const query = encodeURIComponent(foodName + " restaurants");
+        const mapsUrl = `https://www.google.com/maps/search/${query}/@${lat},${lng},${zoom}z`;
+        
+        window.open(mapsUrl, '_blank');
+        
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }, (error) => {
+        console.error("Error getting location:", error);
+        let msg = "Unable to retrieve your location.";
+        if (error.code === 1) msg = "Location permission denied. Please enable location access.";
+        alert(msg);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+}
 
 
 // Teachable Machine - AI Test Logic (Man vs Woman Food Preference)
