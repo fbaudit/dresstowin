@@ -178,7 +178,10 @@
             <p data-i18n="whopay_desc">Who's paying for the meal? Let the ladder decide!</p>
             <div class="ladder-setup">
                 <input type="text" id="ladder-players" placeholder="Enter names (e.g. Alice, Bob, Charlie)" class="ladder-input">
-                <input type="number" id="ladder-amount" placeholder="Total Amount (Optional, e.g. 50000)" class="ladder-input" style="margin-top: 5px;">
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="ladder-amount" placeholder="Total Amount (Optional)" class="ladder-input" style="margin-top: 5px;">
+                    <input type="number" id="ladder-loser-count" placeholder="Losers (Default: 1)" class="ladder-input" style="margin-top: 5px;" min="1" value="1">
+                </div>
                 <p style="font-size: 0.8rem; color: #888; margin-top: 5px; margin-bottom: 10px;" data-i18n="example_ladder">Example: 철수, 영희, 민수 (Leave Amount empty for 'Loser Takes All')</p>
                 <button id="start-ladder-btn" class="action-btn" data-i18n="btn_start_game">Start Game</button>
             </div>

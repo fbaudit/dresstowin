@@ -494,7 +494,7 @@ startLadderBtn.addEventListener('click', () => {
     playLadderGame(players, totalAmount);
 });
 
-function playLadderGame(players, totalAmount) {
+function playLadderGame(players, totalAmount, numLosers) {
     const numPlayers = players.length;
     // Canvas Setup
     const width = Math.min(window.innerWidth - 40, numPlayers * 100); 
@@ -507,7 +507,7 @@ function playLadderGame(players, totalAmount) {
 
     // Reset
     ctx.clearRect(0, 0, width, height);
-    ladderResult.textContent = "Calculating...";
+    ladderResult.textContent = (translations[currentLang] && translations[currentLang].ladder_calculating) || "Calculating...";
 
     // Draw Vertical Lines
     ctx.strokeStyle = "#333";
@@ -557,115 +557,98 @@ function playLadderGame(players, totalAmount) {
     }
 
     // Determine Results (Amounts)
-    let results = [];
-    let maxPayerIndex = 0; // Index of the person paying the most (for highlighting)
+    let results = Array(numPlayers).fill("Free");
+    
+    // Pick unique loser indices
+    let loserIndices = [];
+    while(loserIndices.length < numLosers) {
+        let r = Math.floor(Math.random() * numPlayers);
+        if(loserIndices.indexOf(r) === -1) loserIndices.push(r);
+    }
 
     if (totalAmount > 0) {
-        // Random Distribution
-        // 1. Generate N-1 random cut points in range 0 to totalAmount
-        let cuts = [];
-        for(let k=0; k < numPlayers - 1; k++) {
-            cuts.push(Math.random() * totalAmount);
-        }
-        cuts.push(0);
-        cuts.push(totalAmount);
-        cuts.sort((a, b) => a - b);
+        if (numLosers === 1) {
+            results[loserIndices[0]] = totalAmount.toLocaleString();
+        } else {
+            // Random split logic for N losers
+            let cuts = [];
+            for(let k=0; k < numLosers - 1; k++) cuts.push(Math.random() * totalAmount);
+            cuts.push(0);
+            cuts.push(totalAmount);
+            cuts.sort((a, b) => a - b);
 
-        let amounts = [];
-        for(let k=0; k < numPlayers; k++) {
-            let share = cuts[k+1] - cuts[k];
-            // Round to nearest 100 for cleaner numbers
-            share = Math.round(share / 100) * 100;
-            amounts.push(share);
-        }
-
-        // Adjust sum mismatch due to rounding
-        let currentSum = amounts.reduce((a,b) => a+b, 0);
-        let diff = totalAmount - currentSum;
-        // Add diff to the largest amount to avoid negative numbers on small shares
-        let maxVal = -1;
-        let maxIdx = -1;
-        amounts.forEach((val, idx) => {
-             if(val > maxVal) { maxVal = val; maxIdx = idx; }
-        });
-        amounts[maxIdx] += diff;
-
-        // Shuffle amounts to randomize positions on ladder bottom
-        // (Actually, the ladder path is random, so we can just assign these amounts to bottom slots)
-        // Let's just shuffle them to be sure.
-        for (let i = amounts.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [amounts[i], amounts[j]] = [amounts[j], amounts[i]];
-        }
-        
-        results = amounts.map(a => a.toLocaleString() + ""); // Add currency symbol later or assume implied
-        
-        // Find who pays the MOST
-        let maxAmount = -1;
-        amounts.forEach((amt, idx) => {
-            if(amt > maxAmount) {
-                maxAmount = amt;
-                maxPayerIndex = idx;
+            let amounts = [];
+            for(let k=0; k < numLosers; k++) {
+                let share = cuts[k+1] - cuts[k];
+                share = Math.round(share / 100) * 100;
+                amounts.push(share);
             }
-        });
-        
+            // Adjust sum mismatch
+            let currentSum = amounts.reduce((a,b) => a+b, 0);
+            let diff = totalAmount - currentSum;
+            amounts[0] += diff; // Add diff to first loser
+
+            loserIndices.forEach((idx, i) => {
+                results[idx] = amounts[i].toLocaleString();
+            });
+        }
     } else {
-        // Loser Takes All Mode
-        results = Array(numPlayers).fill("Free");
-        const loserIndex = Math.floor(Math.random() * numPlayers);
-        results[loserIndex] = "PAY 💸";
-        maxPayerIndex = loserIndex;
+        // Loser Takes All Mode (but multiple losers) -> "PAY 💸"
+        loserIndices.forEach(idx => {
+            results[idx] = "PAY 💸";
+        });
     }
 
     // Draw bottom labels
     ctx.font = "bold 14px Arial";
     for (let i = 0; i < numPlayers; i++) {
         const text = results[i];
-        // Red for Payer/High amount, Green for Free/Low
-        ctx.fillStyle = (i === maxPayerIndex) ? "red" : (text === "Free" || text === "0" ? "green" : "#333");
+        // Red for Payer, Green for Free
+        ctx.fillStyle = (text !== "Free") ? "red" : "green";
         ctx.fillText(text, lineX[i], height - 20);
     }
 
-    // Animation: Trace the path from the MAX PAYER spot (bottom) UP to the player
+    // Animation: Trace paths for ALL losers
     setTimeout(() => {
-        let currentIdx = maxPayerIndex;
-        
-        // Merge all bridges with their column index for sorting
+        // Merge all bridges for sorting
         let allBridges = [];
         for(let c=0; c < numPlayers-1; c++) {
             bridges[c].forEach(y => allBridges.push({y, col: c}));
         }
-        // Sort by Y descending (bottom to top) to trace backwards
         allBridges.sort((a, b) => b.y - a.y);
 
-        // Trace up
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(lineX[currentIdx], height - 50);
+        // Highlight losers names at top
+        ctx.fillStyle = "red";
+        ctx.font = "bold 20px Arial";
 
-        allBridges.forEach(bridge => {
-            // bridge connects col and col+1
-            if (bridge.col === currentIdx) {
-                // Bridge to the right (so we came from right, go right)
-                ctx.lineTo(lineX[currentIdx], bridge.y); 
-                ctx.lineTo(lineX[currentIdx + 1], bridge.y); 
-                currentIdx++;
-            } else if (bridge.col === currentIdx - 1) {
-                // Bridge to the left (so we came from left, go left)
-                ctx.lineTo(lineX[currentIdx], bridge.y); 
-                ctx.lineTo(lineX[currentIdx - 1], bridge.y); 
-                currentIdx--;
-            }
+        loserIndices.forEach(loserIdx => {
+             // Trace up logic for each loser
+            let currentIdx = loserIdx;
+            
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 3; // Thinner lines for multiple paths
+            ctx.beginPath();
+            ctx.moveTo(lineX[currentIdx], height - 50);
+
+            allBridges.forEach(bridge => {
+                if (bridge.col === currentIdx) {
+                    ctx.lineTo(lineX[currentIdx], bridge.y); 
+                    ctx.lineTo(lineX[currentIdx + 1], bridge.y); 
+                    currentIdx++;
+                } else if (bridge.col === currentIdx - 1) {
+                    ctx.lineTo(lineX[currentIdx], bridge.y); 
+                    ctx.lineTo(lineX[currentIdx - 1], bridge.y); 
+                    currentIdx--;
+                }
+            });
+
+            ctx.lineTo(lineX[currentIdx], 50);
+            ctx.stroke();
+            
+            ctx.fillText("▼", lineX[currentIdx], 15);
         });
 
-        ctx.lineTo(lineX[currentIdx], 50); // Go to top
-        ctx.stroke();
-
-        const payerName = players[currentIdx];
-        const payAmount = results[maxPayerIndex];
-        
-        // --- Added: Full Summary Calculation ---
+        // --- Full Summary Calculation ---
         let summary = [];
         for (let i = 0; i < numPlayers; i++) {
             // Find which player ends up at bottom slot 'i'
@@ -678,26 +661,11 @@ function playLadderGame(players, totalAmount) {
             summary.push({ name: players[playerIdx], result: results[i] });
         }
 
-        if (totalAmount > 0) {
-             ladderResult.innerHTML = `
-                <p style="margin-bottom:10px;">😭 ${payerName} pays the most: ${payAmount}!</p>
-                <div style="font-size: 0.9rem; border-top: 1px solid #ddd; padding-top: 10px; text-align: left; display: inline-block;">
-                    ${summary.map(s => `<div style="margin-bottom:5px;">• ${s.name}: <span style="color:${s.result.includes('PAY') || parseInt(s.result.replace(/,/g,'')) > 0 ? 'red' : 'green'}">${s.result}</span></div>`).join('')}
-                </div>
-             `;
-        } else {
-             ladderResult.innerHTML = `
-                <p style="margin-bottom:10px;">😭 ${payerName} pays for everything! 💸</p>
-                <div style="font-size: 0.9rem; border-top: 1px solid #ddd; padding-top: 10px; text-align: left; display: inline-block;">
-                    ${summary.map(s => `<div>• ${s.name}: ${s.result}</div>`).join('')}
-                </div>
-             `;
-        }
-        
-        // Highlight the loser's name at top
-        ctx.fillStyle = "red";
-        ctx.font = "bold 20px Arial";
-        ctx.fillText("▼", lineX[currentIdx], 15);
+        ladderResult.innerHTML = `
+            <div style="font-size: 0.9rem; border-top: 1px solid #ddd; padding-top: 10px; text-align: left; display: inline-block;">
+                ${summary.map(s => `<div style="margin-bottom:5px;">• ${s.name}: <span style="font-weight:bold; color:${s.result !== 'Free' ? 'red' : 'green'}">${s.result}</span></div>`).join('')}
+            </div>
+        `;
 
     }, 500);
 }
