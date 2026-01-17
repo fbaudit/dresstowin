@@ -40,11 +40,16 @@
         <button id="theme-toggle" style="position: relative; top: auto; right: auto; margin-bottom: 1rem;">🌙 Dark Mode</button>
         
         <header>
-            <h1>Saturday Family Dining 🍽️</h1>
-            <p class="subtitle">Solve your weekend menu dilemma instantly!</p>
+            <h1>Family Dining Menu 🍽️</h1>
+            <p class="subtitle">Solve your daily menu dilemma instantly!</p>
         </header>
 
         <section class="content-section">
+            <div class="tabs">
+                <button class="tab-btn" data-meal="breakfast">Breakfast</button>
+                <button class="tab-btn" data-meal="lunch">Lunch</button>
+                <button class="tab-btn active" data-meal="dinner">Dinner</button>
+            </div>
             <div id="result-container" class="result-area">
                 <p class="placeholder-text">Click the button below to get a delicious recommendation!</p>
             </div>

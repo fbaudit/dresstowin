@@ -25,33 +25,73 @@ themeToggleBtn.addEventListener('click', function () {
 });
 
 // Food Recommendation Logic
-const foodOptions = [
-    { name: "Korean BBQ (Samgyeopsal/Galbi)", image: "https://loremflickr.com/600/400/korean,bbq" },
-    { name: "Chinese Cuisine (Jajangmyeon/Tangsuyuk)", image: "https://loremflickr.com/600/400/chinese,food" },
-    { name: "Japanese Sushi/Sashimi", image: "https://loremflickr.com/600/400/sushi,sashimi" },
-    { name: "Western Steak & Pasta", image: "https://loremflickr.com/600/400/steak,pasta" },
-    { name: "Pizza & Salad Bar", image: "https://loremflickr.com/600/400/pizza" },
-    { name: "Fried Chicken & Beer (Chimaek)", image: "https://loremflickr.com/600/400/fried,chicken" },
-    { name: "Family Restaurant (Outback/VIPS)", image: "https://loremflickr.com/600/400/restaurant,food" },
-    { name: "Vietnamese Pho", image: "https://loremflickr.com/600/400/pho,noodle" },
-    { name: "Thai Cuisine", image: "https://loremflickr.com/600/400/thai,food" },
-    { name: "Shabu-Shabu", image: "https://loremflickr.com/600/400/shabu,hotpot" },
-    { name: "Korean Stew (Kimchi/Budae Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew" },
-    { name: "Burger & Fries", image: "https://loremflickr.com/600/400/burger,fries" }
-];
+const foodData = {
+    breakfast: [
+        { name: "Toast & Fried Eggs", image: "https://loremflickr.com/600/400/toast,eggs" },
+        { name: "Pancakes with Syrup", image: "https://loremflickr.com/600/400/pancakes" },
+        { name: "Cereal & Milk", image: "https://loremflickr.com/600/400/cereal,milk" },
+        { name: "Oatmeal with Fruits", image: "https://loremflickr.com/600/400/oatmeal" },
+        { name: "Bagel with Cream Cheese", image: "https://loremflickr.com/600/400/bagel" },
+        { name: "Korean Style Breakfast (Rice & Soup)", image: "https://loremflickr.com/600/400/korean,breakfast" },
+        { name: "Breakfast Sandwich", image: "https://loremflickr.com/600/400/sandwich" },
+        { name: "Yogurt & Granola", image: "https://loremflickr.com/600/400/yogurt" }
+    ],
+    lunch: [
+        { name: "Kimchi Stew (Kimchi Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew" },
+        { name: "Bibimbap", image: "https://loremflickr.com/600/400/bibimbap" },
+        { name: "Pork Cutlet (Tonkatsu)", image: "https://loremflickr.com/600/400/tonkatsu" },
+        { name: "Pasta (Tomato/Cream)", image: "https://loremflickr.com/600/400/pasta" },
+        { name: "Ramen / Noodles", image: "https://loremflickr.com/600/400/ramen" },
+        { name: "Fried Rice", image: "https://loremflickr.com/600/400/fried,rice" },
+        { name: "Sub Sandwich", image: "https://loremflickr.com/600/400/sub,sandwich" },
+        { name: "Tteokbokki (Spicy Rice Cakes)", image: "https://loremflickr.com/600/400/tteokbokki" },
+        { name: "Gimbap", image: "https://loremflickr.com/600/400/gimbap" }
+    ],
+    dinner: [
+        { name: "Korean BBQ (Samgyeopsal/Galbi)", image: "https://loremflickr.com/600/400/korean,bbq" },
+        { name: "Chinese Cuisine (Jajangmyeon/Tangsuyuk)", image: "https://loremflickr.com/600/400/chinese,food" },
+        { name: "Japanese Sushi/Sashimi", image: "https://loremflickr.com/600/400/sushi,sashimi" },
+        { name: "Western Steak & Pasta", image: "https://loremflickr.com/600/400/steak,pasta" },
+        { name: "Pizza & Salad Bar", image: "https://loremflickr.com/600/400/pizza" },
+        { name: "Fried Chicken & Beer (Chimaek)", image: "https://loremflickr.com/600/400/fried,chicken" },
+        { name: "Family Restaurant (Outback/VIPS)", image: "https://loremflickr.com/600/400/restaurant,food" },
+        { name: "Vietnamese Pho", image: "https://loremflickr.com/600/400/pho,noodle" },
+        { name: "Thai Cuisine", image: "https://loremflickr.com/600/400/thai,food" },
+        { name: "Shabu-Shabu", image: "https://loremflickr.com/600/400/shabu,hotpot" },
+        { name: "Korean Stew (Kimchi/Budae Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew" },
+        { name: "Burger & Fries", image: "https://loremflickr.com/600/400/burger,fries" }
+    ]
+};
 
+let currentMeal = 'dinner';
 const generateButton = document.getElementById('generate-button');
 const resultContainer = document.getElementById('result-container');
+const tabBtns = document.querySelectorAll('.tab-btn');
+
+// Tab Switching Logic
+tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all
+        tabBtns.forEach(b => b.classList.remove('active'));
+        // Add to clicked
+        btn.classList.add('active');
+        // Update state
+        currentMeal = btn.dataset.meal;
+        
+        // Reset result area to placeholder
+        resultContainer.innerHTML = '<p class="placeholder-text">Click the button below to get a delicious recommendation!</p>';
+    });
+});
 
 generateButton.addEventListener('click', () => {
     // Add a simple animation effect
     resultContainer.innerHTML = '<div class="loader">Thinking...</div>';
     
     setTimeout(() => {
-        const randomIndex = Math.floor(Math.random() * foodOptions.length);
-        const selectedFood = foodOptions[randomIndex];
-        // Add a timestamp to the image URL to prevent browser caching and ensure a fresh image if the same category is picked again, 
-        // though strictly for loremflickr it might not be strictly necessary for the 'random' effect on reload, it helps with repeated clicks.
+        const options = foodData[currentMeal];
+        const randomIndex = Math.floor(Math.random() * options.length);
+        const selectedFood = options[randomIndex];
+        // Add a timestamp to the image URL to prevent browser caching
         const imageUrl = `${selectedFood.image}?random=${Date.now()}`;
         
         resultContainer.innerHTML = `
