@@ -95,59 +95,59 @@ themeToggleBtn.addEventListener('click', function () {
 // Food Recommendation Logic
 const foodData = {
     breakfast: [
-        { name: "Toast & Fried Eggs", image: "https://loremflickr.com/600/400/toast,eggs", description: "Classic and simple start to the day.", calories: 350, sodium: 450 },
-        { name: "Pancakes with Syrup", image: "https://loremflickr.com/600/400/pancakes", description: "Fluffy pancakes topped with sweet maple syrup.", calories: 450, sodium: 500 },
-        { name: "Cereal & Milk", image: "https://loremflickr.com/600/400/cereal,milk", description: "Quick and easy energy boost.", calories: 250, sodium: 200 },
-        { name: "Oatmeal with Fruits", image: "https://loremflickr.com/600/400/oatmeal", description: "Healthy and warm oatmeal topped with fresh fruits.", calories: 300, sodium: 50 },
-        { name: "Bagel with Cream Cheese", image: "https://loremflickr.com/600/400/bagel", description: "Chewy bagel spread with smooth cream cheese.", calories: 400, sodium: 450 },
-        { name: "Korean Style Breakfast (Rice & Soup)", image: "https://loremflickr.com/600/400/korean,breakfast", description: "Hearty meal with steamed rice, soup, and side dishes.", calories: 500, sodium: 900 },
-        { name: "Breakfast Sandwich", image: "https://loremflickr.com/600/400/sandwich", description: "Everything you need in one hand.", calories: 450, sodium: 850 },
-        { name: "Yogurt & Granola", image: "https://loremflickr.com/600/400/yogurt", description: "Light and refreshing with a crunch.", calories: 280, sodium: 60 }
+        { name: "Toast & Fried Eggs", image: "https://image.pollinations.ai/prompt/toast%20and%20fried%20eggs%20breakfast%20plate?width=600&height=400&nologo=true", description: "Classic and simple start to the day.", calories: 350, sodium: 450 },
+        { name: "Pancakes with Syrup", image: "https://image.pollinations.ai/prompt/fluffy%20pancakes%20with%20syrup%20stack?width=600&height=400&nologo=true", description: "Fluffy pancakes topped with sweet maple syrup.", calories: 450, sodium: 500 },
+        { name: "Cereal & Milk", image: "https://image.pollinations.ai/prompt/cereal%20bowl%20with%20milk%20spoon?width=600&height=400&nologo=true", description: "Quick and easy energy boost.", calories: 250, sodium: 200 },
+        { name: "Oatmeal with Fruits", image: "https://image.pollinations.ai/prompt/oatmeal%20bowl%20with%20fresh%20fruits?width=600&height=400&nologo=true", description: "Healthy and warm oatmeal topped with fresh fruits.", calories: 300, sodium: 50 },
+        { name: "Bagel with Cream Cheese", image: "https://image.pollinations.ai/prompt/bagel%20with%20cream%20cheese%20spread?width=600&height=400&nologo=true", description: "Chewy bagel spread with smooth cream cheese.", calories: 400, sodium: 450 },
+        { name: "Korean Style Breakfast (Rice & Soup)", image: "https://image.pollinations.ai/prompt/korean%20breakfast%20rice%20soup%20banchan?width=600&height=400&nologo=true", description: "Hearty meal with steamed rice, soup, and side dishes.", calories: 500, sodium: 900 },
+        { name: "Breakfast Sandwich", image: "https://image.pollinations.ai/prompt/breakfast%20sandwich%20egg%20cheese%20bacon?width=600&height=400&nologo=true", description: "Everything you need in one hand.", calories: 450, sodium: 850 },
+        { name: "Yogurt & Granola", image: "https://image.pollinations.ai/prompt/yogurt%20bowl%20granola%20fruit?width=600&height=400&nologo=true", description: "Light and refreshing with a crunch.", calories: 280, sodium: 60 }
     ],
     lunch: [
-        { name: "Kimchi Stew (Kimchi Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew", description: "Spicy and savory stew with kimchi and pork.", calories: 450, sodium: 1200 },
-        { name: "Bibimbap", image: "https://loremflickr.com/600/400/bibimbap", description: "Mixed rice with vegetables, meat, and gochujang sauce.", calories: 600, sodium: 1100 },
-        { name: "Pork Cutlet (Tonkatsu)", image: "https://loremflickr.com/600/400/tonkatsu", description: "Crispy fried pork cutlet with savory sauce.", calories: 800, sodium: 950 },
-        { name: "Pasta (Tomato/Cream)", image: "https://loremflickr.com/600/400/pasta", description: "Classic Italian noodles in tomato or cream sauce.", calories: 700, sodium: 800 },
-        { name: "Ramen / Noodles", image: "https://loremflickr.com/600/400/ramen", description: "Quick, hot, and satisfying noodles.", calories: 500, sodium: 1800 },
-        { name: "Fried Rice", image: "https://loremflickr.com/600/400/fried,rice", description: "Wok-fried rice with vegetables and meat.", calories: 750, sodium: 900 },
-        { name: "Sub Sandwich", image: "https://loremflickr.com/600/400/sub,sandwich", description: "Fresh ingredients packed in a long roll.", calories: 550, sodium: 1100 },
-        { name: "Tteokbokki (Spicy Rice Cakes)", image: "https://loremflickr.com/600/400/tteokbokki", description: "Spicy and chewy rice cakes, a popular street food.", calories: 600, sodium: 1300 },
-        { name: "Gimbap", image: "https://loremflickr.com/600/400/gimbap", description: "Rice and fillings rolled in dried seaweed.", calories: 400, sodium: 700 }
+        { name: "Kimchi Stew (Kimchi Jjigae)", image: "https://image.pollinations.ai/prompt/kimchi%20stew%20jjigae%20korean%20food?width=600&height=400&nologo=true", description: "Spicy and savory stew with kimchi and pork.", calories: 450, sodium: 1200 },
+        { name: "Bibimbap", image: "https://image.pollinations.ai/prompt/bibimbap%20korean%20mixed%20rice%20bowl?width=600&height=400&nologo=true", description: "Mixed rice with vegetables, meat, and gochujang sauce.", calories: 600, sodium: 1100 },
+        { name: "Pork Cutlet (Tonkatsu)", image: "https://image.pollinations.ai/prompt/pork%20cutlet%20tonkatsu%20crispy?width=600&height=400&nologo=true", description: "Crispy fried pork cutlet with savory sauce.", calories: 800, sodium: 950 },
+        { name: "Pasta (Tomato/Cream)", image: "https://image.pollinations.ai/prompt/pasta%20tomato%20cream%20sauce%20italian?width=600&height=400&nologo=true", description: "Classic Italian noodles in tomato or cream sauce.", calories: 700, sodium: 800 },
+        { name: "Ramen / Noodles", image: "https://image.pollinations.ai/prompt/ramen%20noodle%20soup%20bowl?width=600&height=400&nologo=true", description: "Quick, hot, and satisfying noodles.", calories: 500, sodium: 1800 },
+        { name: "Fried Rice", image: "https://image.pollinations.ai/prompt/fried%20rice%20vegetables%20wok?width=600&height=400&nologo=true", description: "Wok-fried rice with vegetables and meat.", calories: 750, sodium: 900 },
+        { name: "Sub Sandwich", image: "https://image.pollinations.ai/prompt/sub%20sandwich%20fresh%20ingredients%20long?width=600&height=400&nologo=true", description: "Fresh ingredients packed in a long roll.", calories: 550, sodium: 1100 },
+        { name: "Tteokbokki (Spicy Rice Cakes)", image: "https://image.pollinations.ai/prompt/tteokbokki%20spicy%20rice%20cakes%20korean?width=600&height=400&nologo=true", description: "Spicy and chewy rice cakes, a popular street food.", calories: 600, sodium: 1300 },
+        { name: "Gimbap", image: "https://image.pollinations.ai/prompt/gimbap%20korean%20seaweed%20rice%20roll?width=600&height=400&nologo=true", description: "Rice and fillings rolled in dried seaweed.", calories: 400, sodium: 700 }
     ],
     dinner: [
-        { name: "Korean BBQ (Samgyeopsal/Galbi)", image: "https://loremflickr.com/600/400/korean,bbq", description: "Grill your own succulent meat at the table.", calories: 900, sodium: 1000 },
-        { name: "Chinese Cuisine (Jajangmyeon/Tangsuyuk)", image: "https://loremflickr.com/600/400/chinese,food", description: "Savory black bean noodles or sweet and sour pork.", calories: 850, sodium: 1500 },
-        { name: "Japanese Sushi/Sashimi", image: "https://loremflickr.com/600/400/sushi,sashimi", description: "Fresh raw fish and vinegared rice.", calories: 500, sodium: 900 },
-        { name: "Western Steak & Pasta", image: "https://loremflickr.com/600/400/steak,pasta", description: "Juicy steak paired with delicious pasta.", calories: 950, sodium: 1200 },
-        { name: "Pizza & Salad Bar", image: "https://loremflickr.com/600/400/pizza", description: "Cheesy pizza with a variety of fresh salads.", calories: 800, sodium: 1400 },
-        { name: "Fried Chicken & Beer (Chimaek)", image: "https://loremflickr.com/600/400/fried,chicken", description: "Crispy fried chicken paired with cold beer.", calories: 1200, sodium: 1600 },
-        { name: "Family Restaurant (Outback/VIPS)", image: "https://loremflickr.com/600/400/restaurant,food", description: "A variety of dishes for the whole family.", calories: 1000, sodium: 1300 },
-        { name: "Vietnamese Pho", image: "https://loremflickr.com/600/400/pho,noodle", description: "Warm and aromatic beef noodle soup.", calories: 450, sodium: 1400 },
-        { name: "Thai Cuisine", image: "https://loremflickr.com/600/400/thai,food", description: "Exotic flavors with spices and herbs.", calories: 700, sodium: 1300 },
-        { name: "Shabu-Shabu", image: "https://loremflickr.com/600/400/shabu,hotpot", description: "Hot pot with thinly sliced meat and vegetables.", calories: 500, sodium: 1500 },
-        { name: "Korean Stew (Kimchi/Budae Jjigae)", image: "https://loremflickr.com/600/400/kimchi,stew", description: "Deep and rich flavors of Korean stews.", calories: 600, sodium: 1800 },
-        { name: "Burger & Fries", image: "https://loremflickr.com/600/400/burger,fries", description: "Juicy burger with golden crispy fries.", calories: 900, sodium: 1300 }
+        { name: "Korean BBQ (Samgyeopsal/Galbi)", image: "https://image.pollinations.ai/prompt/korean%20bbq%20samgyeopsal%20grill?width=600&height=400&nologo=true", description: "Grill your own succulent meat at the table.", calories: 900, sodium: 1000 },
+        { name: "Chinese Cuisine (Jajangmyeon/Tangsuyuk)", image: "https://image.pollinations.ai/prompt/jajangmyeon%20tangsuyuk%20chinese%20food?width=600&height=400&nologo=true", description: "Savory black bean noodles or sweet and sour pork.", calories: 850, sodium: 1500 },
+        { name: "Japanese Sushi/Sashimi", image: "https://image.pollinations.ai/prompt/sushi%20sashimi%20platter%20japanese?width=600&height=400&nologo=true", description: "Fresh raw fish and vinegared rice.", calories: 500, sodium: 900 },
+        { name: "Western Steak & Pasta", image: "https://image.pollinations.ai/prompt/steak%20and%20pasta%20dinner%20plate?width=600&height=400&nologo=true", description: "Juicy steak paired with delicious pasta.", calories: 950, sodium: 1200 },
+        { name: "Pizza & Salad Bar", image: "https://image.pollinations.ai/prompt/pizza%20and%20salad%20bar%20buffet?width=600&height=400&nologo=true", description: "Cheesy pizza with a variety of fresh salads.", calories: 800, sodium: 1400 },
+        { name: "Fried Chicken & Beer (Chimaek)", image: "https://image.pollinations.ai/prompt/fried%20chicken%20and%20beer%20korean%20chimaek?width=600&height=400&nologo=true", description: "Crispy fried chicken paired with cold beer.", calories: 1200, sodium: 1600 },
+        { name: "Family Restaurant (Outback/VIPS)", image: "https://image.pollinations.ai/prompt/family%20restaurant%20food%20table%20feast?width=600&height=400&nologo=true", description: "A variety of dishes for the whole family.", calories: 1000, sodium: 1300 },
+        { name: "Vietnamese Pho", image: "https://image.pollinations.ai/prompt/vietnamese%20pho%20noodle%20soup?width=600&height=400&nologo=true", description: "Warm and aromatic beef noodle soup.", calories: 450, sodium: 1400 },
+        { name: "Thai Cuisine", image: "https://image.pollinations.ai/prompt/thai%20food%20pad%20thai%20curry?width=600&height=400&nologo=true", description: "Exotic flavors with spices and herbs.", calories: 700, sodium: 1300 },
+        { name: "Shabu-Shabu", image: "https://image.pollinations.ai/prompt/shabu%20shabu%20hotpot%20meat%20vegetables?width=600&height=400&nologo=true", description: "Hot pot with thinly sliced meat and vegetables.", calories: 500, sodium: 1500 },
+        { name: "Korean Stew (Kimchi/Budae Jjigae)", image: "https://image.pollinations.ai/prompt/korean%20stew%20budae%20jjigae%20pot?width=600&height=400&nologo=true", description: "Deep and rich flavors of Korean stews.", calories: 600, sodium: 1800 },
+        { name: "Burger & Fries", image: "https://image.pollinations.ai/prompt/burger%20and%20fries%20meal?width=600&height=400&nologo=true", description: "Juicy burger with golden crispy fries.", calories: 900, sodium: 1300 }
     ],
     dessert: [
-        { name: "Ice Cream / Gelato", image: "https://loremflickr.com/600/400/icecream", description: "Cool and creamy treat in various flavors.", calories: 250, sodium: 50 },
-        { name: "Cheesecake", image: "https://loremflickr.com/600/400/cheesecake", description: "Rich and smooth cake with a biscuit base.", calories: 400, sodium: 300 },
-        { name: "Fruit Tart", image: "https://loremflickr.com/600/400/fruit,tart", description: "Crispy pastry filled with custard and fresh fruit.", calories: 350, sodium: 100 },
-        { name: "Chocolate Brownie", image: "https://loremflickr.com/600/400/brownie", description: "Fudgy chocolate square, perfect with milk.", calories: 300, sodium: 150 },
-        { name: "Bingsu (Korean Shaved Ice)", image: "https://loremflickr.com/600/400/bingsu", description: "Shaved ice with sweet red beans and toppings.", calories: 500, sodium: 50 },
-        { name: "Macarons", image: "https://loremflickr.com/600/400/macaron", description: "Colorful and delicate almond meringue cookies.", calories: 150, sodium: 20 },
-        { name: "Waffles", image: "https://loremflickr.com/600/400/waffle", description: "Crispy outside, fluffy inside, with toppings.", calories: 450, sodium: 400 },
-        { name: "Donuts", image: "https://loremflickr.com/600/400/donut", description: "Sweet fried dough, glazed or filled.", calories: 300, sodium: 250 }
+        { name: "Ice Cream / Gelato", image: "https://image.pollinations.ai/prompt/ice%20cream%20gelato%20scoops%20cone?width=600&height=400&nologo=true", description: "Cool and creamy treat in various flavors.", calories: 250, sodium: 50 },
+        { name: "Cheesecake", image: "https://image.pollinations.ai/prompt/cheesecake%20slice%20dessert?width=600&height=400&nologo=true", description: "Rich and smooth cake with a biscuit base.", calories: 400, sodium: 300 },
+        { name: "Fruit Tart", image: "https://image.pollinations.ai/prompt/fruit%20tart%20pastry%20fresh?width=600&height=400&nologo=true", description: "Crispy pastry filled with custard and fresh fruit.", calories: 350, sodium: 100 },
+        { name: "Chocolate Brownie", image: "https://image.pollinations.ai/prompt/chocolate%20brownie%20fudgy?width=600&height=400&nologo=true", description: "Fudgy chocolate square, perfect with milk.", calories: 300, sodium: 150 },
+        { name: "Bingsu (Korean Shaved Ice)", image: "https://image.pollinations.ai/prompt/bingsu%20korean%20shaved%20ice%20dessert?width=600&height=400&nologo=true", description: "Shaved ice with sweet red beans and toppings.", calories: 500, sodium: 50 },
+        { name: "Macarons", image: "https://image.pollinations.ai/prompt/macarons%20colorful%20cookies?width=600&height=400&nologo=true", description: "Colorful and delicate almond meringue cookies.", calories: 150, sodium: 20 },
+        { name: "Waffles", image: "https://image.pollinations.ai/prompt/waffles%20with%20toppings%20dessert?width=600&height=400&nologo=true", description: "Crispy outside, fluffy inside, with toppings.", calories: 450, sodium: 400 },
+        { name: "Donuts", image: "https://image.pollinations.ai/prompt/donuts%20glazed%20sweet?width=600&height=400&nologo=true", description: "Sweet fried dough, glazed or filled.", calories: 300, sodium: 250 }
     ],
     latenight: [
-        { name: "Ramyeon (Instant Noodles)", image: "https://loremflickr.com/600/400/ramyeon", description: "Spicy and quick instant noodles.", calories: 500, sodium: 1900 },
-        { name: "Fried Chicken", image: "https://loremflickr.com/600/400/fried,chicken", description: "The ultimate late-night crispy snack.", calories: 1200, sodium: 1600 },
-        { name: "Jokbal (Braised Pig's Trotters)", image: "https://loremflickr.com/600/400/jokbal", description: "Chewy and savory braised pork.", calories: 700, sodium: 1400 },
-        { name: "Bossam (Boiled Pork Wraps)", image: "https://loremflickr.com/600/400/bossam", description: "Tender boiled pork wrapped in cabbage.", calories: 800, sodium: 1200 },
-        { name: "Pizza", image: "https://loremflickr.com/600/400/pizza,slice", description: "A slice of cheesy goodness at night.", calories: 300, sodium: 600 },
-        { name: "Tteokbokki", image: "https://loremflickr.com/600/400/tteokbokki", description: "Spicy rice cakes to wake up your taste buds.", calories: 600, sodium: 1300 },
-        { name: "Gopchang (Grilled Intestines)", image: "https://loremflickr.com/600/400/gopchang", description: "Chewy grilled intestines, great with soju.", calories: 800, sodium: 1100 },
-        { name: "Dakbal (Spicy Chicken Feet)", image: "https://loremflickr.com/600/400/dakbal", description: "Fiery spicy chicken feet for the brave.", calories: 500, sodium: 1500 }
+        { name: "Ramyeon (Instant Noodles)", image: "https://image.pollinations.ai/prompt/korean%20ramyeon%20instant%20noodles%20pot?width=600&height=400&nologo=true", description: "Spicy and quick instant noodles.", calories: 500, sodium: 1900 },
+        { name: "Fried Chicken", image: "https://image.pollinations.ai/prompt/crispy%20fried%20chicken%20basket?width=600&height=400&nologo=true", description: "The ultimate late-night crispy snack.", calories: 1200, sodium: 1600 },
+        { name: "Jokbal (Braised Pig's Trotters)", image: "https://image.pollinations.ai/prompt/jokbal%20korean%20braised%20pigs%20trotters?width=600&height=400&nologo=true", description: "Chewy and savory braised pork.", calories: 700, sodium: 1400 },
+        { name: "Bossam (Boiled Pork Wraps)", image: "https://image.pollinations.ai/prompt/bossam%20korean%20boiled%20pork%20wraps?width=600&height=400&nologo=true", description: "Tender boiled pork wrapped in cabbage.", calories: 800, sodium: 1200 },
+        { name: "Pizza", image: "https://image.pollinations.ai/prompt/pizza%20slice%20cheese%20pepperoni?width=600&height=400&nologo=true", description: "A slice of cheesy goodness at night.", calories: 300, sodium: 600 },
+        { name: "Tteokbokki", image: "https://image.pollinations.ai/prompt/tteokbokki%20red%20spicy%20food?width=600&height=400&nologo=true", description: "Spicy rice cakes to wake up your taste buds.", calories: 600, sodium: 1300 },
+        { name: "Gopchang (Grilled Intestines)", image: "https://image.pollinations.ai/prompt/gopchang%20grilled%20intestines%20korean?width=600&height=400&nologo=true", description: "Chewy grilled intestines, great with soju.", calories: 800, sodium: 1100 },
+        { name: "Dakbal (Spicy Chicken Feet)", image: "https://image.pollinations.ai/prompt/dakbal%20spicy%20chicken%20feet%20food?width=600&height=400&nologo=true", description: "Fiery spicy chicken feet for the brave.", calories: 500, sodium: 1500 }
     ]
 };
 
@@ -429,8 +429,9 @@ const makingContent = document.getElementById('making-content');
 
 function renderRecipe(cuisine) {
     const recipe = blogRecipes[cuisine];
-    // Add timestamp to image to avoid caching issues with loremflickr
-    const imgUrl = `${recipe.image}?random=${Date.now()}`;
+    // Add timestamp/seed to image to avoid caching issues
+    const separator = recipe.image.includes('?') ? '&' : '?';
+    const imgUrl = `${recipe.image}${separator}seed=${Date.now()}`;
     
     // Get text based on current language, fallback to 'en'
     const getTxt = (obj) => obj[currentLang] || obj['en'];
@@ -698,8 +699,9 @@ generateButton.addEventListener('click', () => {
         const options = foodData[currentMeal];
         const randomIndex = Math.floor(Math.random() * options.length);
         const selectedFood = options[randomIndex];
-        // Add a timestamp to the image URL to prevent browser caching
-        const imageUrl = `${selectedFood.image}?random=${Date.now()}`;
+        // Add a timestamp/seed to the image URL to prevent browser caching
+        const separator = selectedFood.image.includes('?') ? '&' : '?';
+        const imageUrl = `${selectedFood.image}${separator}seed=${Date.now()}`;
         
         resultContainer.innerHTML = `
             <div class="food-card">
