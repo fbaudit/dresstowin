@@ -1,11 +1,40 @@
 // Language Switching Logic
-let currentLang = localStorage.getItem('language') || 'en';
 const langSelector = document.getElementById('language-selector');
 
-function updateLanguage(lang) {
+function resolveInitialLang() {
+    const params = new URLSearchParams(window.location.search);
+    const paramLang = params.get('lang');
+    if (paramLang && translations[paramLang]) {
+        return paramLang;
+    }
+
+    const storedLang = localStorage.getItem('language');
+    if (storedLang && translations[storedLang]) {
+        return storedLang;
+    }
+
+    return 'en';
+}
+
+function syncLangParam(lang) {
+    const url = new URL(window.location.href);
+    if (lang === 'en') {
+        url.searchParams.delete('lang');
+    } else {
+        url.searchParams.set('lang', lang);
+    }
+    window.history.replaceState({}, '', url.toString());
+}
+
+let currentLang = resolveInitialLang();
+
+function updateLanguage(lang, options = {}) {
     currentLang = lang;
     localStorage.setItem('language', lang);
     langSelector.value = lang;
+    if (options.updateUrl !== false) {
+        syncLangParam(lang);
+    }
 
     // RTL for Arabic
     if (lang === 'ar') {
@@ -58,11 +87,11 @@ function updateLanguage(lang) {
 
 // Initial Load
 document.addEventListener('DOMContentLoaded', () => {
-    updateLanguage(currentLang);
+    updateLanguage(currentLang, { updateUrl: true });
 });
 
 langSelector.addEventListener('change', (e) => {
-    updateLanguage(e.target.value);
+    updateLanguage(e.target.value, { updateUrl: true });
 });
 
 
